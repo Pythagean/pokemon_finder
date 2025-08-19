@@ -5,8 +5,8 @@
 }
 
 .sidebar {
-  width: 250px;
-  min-width: 250px;
+  width: 300px;
+  min-width: 300px;
   background-color: #f5f5f5;
   padding: 20px 16px 20px 20px;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
@@ -20,17 +20,17 @@
 }
 
 .sidebar.collapsed {
-  transform: translateX(-276px);  /* Reduced to keep toggle button visible */
+  transform: translateX(-300px);
 }
 
-.sidebar.collapsed .sidebar-toggle {
-  left: 276px;  /* Matches the transform offset */
+.pokemon-app.sidebar-collapsed .sidebar-toggle {
+  left: 5px;
 }
 
 .sidebar-toggle {
   position: fixed;
   right: auto;
-  left: 230px;
+  left: 280px;
   top: 20px;
   width: 24px;
   height: 32px;
@@ -57,8 +57,8 @@
 .main-content {
   flex: 1;
   padding: 16px 16px 16px 32px;
-  margin-left: 250px;
-  width: calc(100% - 250px);
+  margin-left: 300px;
+  width: calc(100% - 300px);
   transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
   box-sizing: border-box;
 }
@@ -340,12 +340,12 @@ button:disabled {
 }
 
 .pokemon-card.greyed {
-  opacity: 0.5;
+  opacity: 0.25;
   filter: grayscale(100%);
 }
 
 .pokemon-card-greyed {
-  opacity: 0.5;
+  opacity: 0.25;
   filter: grayscale(100%);
 }
 
@@ -403,15 +403,15 @@ button:disabled {
   }
   
   .sidebar {
-    width: 230px;
-    min-width: 230px;
-    transform: translateX(-230px);
+    width: 200px;
+    min-width: 200px;
+    transform: translateX(-240px);
     z-index: 1000;
     transition: transform 0.3s ease-in-out;
   }
   
   .sidebar.collapsed {
-    transform: translateX(-230px);
+    transform: translateX(-240px);
   }
   
   .sidebar:not(.collapsed) {
@@ -419,28 +419,26 @@ button:disabled {
   }
   
   .sidebar-toggle {
-    left: 0;
-    top: 10px;
-    background-color: #2196F3;
-    color: white;
-    border-radius: 0 8px 8px 0;
-    z-index: 1001;
-    width: 32px;
-    height: 40px;
+    position: fixed !important;
+    left: 180px !important;
+    top: 10px !important;
+    background-color: #2196F3 !important;
+    color: white !important;
+    border-radius: 0 8px 8px 0 !important;
+    z-index: 1001 !important;
+    width: 32px !important;
+    height: 40px !important;
+    transform: none !important;
   }
   
-  .sidebar.collapsed .sidebar-toggle {
-    left: 0;
-  }
-  
-  .sidebar:not(.collapsed) .sidebar-toggle {
-    left: 230px;
+  .pokemon-app.sidebar-collapsed .sidebar-toggle {
+    left: 5px !important;
   }
   
   .main-content {
     margin-left: 0;
     width: 100%;
-    padding: 16px 8px;
+    padding: 16px 16px;
   }
   
   .sidebar.collapsed + .main-content {
@@ -503,12 +501,12 @@ button:disabled {
   }
   
   .main-content {
-    padding: 8px 4px;
+    padding: 8px 12px;
   }
   
   .sidebar {
-    width: 260px;
-    min-width: 260px;
+    width: 200px;
+    min-width: 200px;
     padding: 15px 12px;
   }
   

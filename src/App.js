@@ -170,16 +170,16 @@ function App() {
   };
 
   return (
-    <div className="pokemon-app">
+    <div className={`pokemon-app ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <button 
+        className="sidebar-toggle"
+        onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
+        aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {isSidebarCollapsed ? '►' : '◄'}
+      </button>
       <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
-        <button 
-          className="sidebar-toggle"
-          onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-          aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          {isSidebarCollapsed ? '►' : '◄'}
-        </button>
         <div className="control-section">
           <div className="control-group">
             <h3>Sort by</h3>
@@ -210,10 +210,10 @@ function App() {
 
           <div className="control-buttons">
             <button className="disable-all-btn" onClick={handleDisableAll} disabled={loading || error}>
-              Disable All
+              Hide All
             </button>
             <button className="enable-all-btn" onClick={handleEnableAll} disabled={loading || error}>
-              Enable All
+              Show All
             </button>
           </div>
         </div>
