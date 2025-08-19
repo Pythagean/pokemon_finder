@@ -1,0 +1,203 @@
+/* Enable All Button */
+.enable-all-btn {
+  margin-top: 12px;
+  margin-left: 10px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #38a169;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.enable-all-btn:hover:enabled {
+  background: #2f855a;
+}
+.enable-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Disable All Button */
+.disable-all-btn {
+  margin-top: 12px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #e53e3e;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.disable-all-btn:hover:enabled {
+  background: #c53030;
+}
+.disable-all-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Pokémon Grid Layout */
+.pokemon-grid-wrapper {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pokemon-grid {
+  display: grid;
+  /* Calculate columns to show ~13-15 per row based on screen width */
+  grid-template-columns: repeat(auto-fit, minmax(min(70px, 100%), 1fr));
+  /* Reduce gap to fit more content */
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  box-sizing: border-box;
+  /* Calculate height to ensure all Pokémon fit (about 11 rows needed) */
+  height: calc(100vh - 24px);
+}
+
+/* Pokémon Card */
+.pokemon-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+  cursor: pointer;
+  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+.pokemon-card:hover {
+  transform: scale(1.1);
+  z-index: 1;
+}
+.pokemon-card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: all 0.15s;
+}
+.pokemon-card-name {
+  font-weight: 600;
+  color: #222;
+  text-align: center;
+  font-size: 1rem;
+}
+.pokemon-card-greyed {
+  opacity: 0.3;
+  filter: grayscale(1) brightness(1.2);
+}
+/* Control Buttons Container */
+.control-buttons {
+  margin: 12px 0;
+}
+
+/* Type Filters Container */
+.type-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Type Filter Buttons */
+.type-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.type-btn:hover:enabled {
+  filter: brightness(1.1);
+}
+
+.type-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.type-btn.inactive {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.type-btn.inactive:hover {
+  opacity: 0.6;
+}
+
+/* Type-specific colors */
+.type-normal { background: #A8A878; color: white; }
+.type-fire { background: #F08030; color: white; }
+.type-water { background: #6890F0; color: white; }
+.type-electric { background: #F8D030; color: black; }
+.type-grass { background: #78C850; color: white; }
+.type-ice { background: #98D8D8; color: black; }
+.type-fighting { background: #C03028; color: white; }
+.type-poison { background: #A040A0; color: white; }
+.type-ground { background: #E0C068; color: black; }
+.type-flying { background: #A890F0; color: white; }
+.type-psychic { background: #F85888; color: white; }
+.type-bug { background: #A8B820; color: white; }
+.type-rock { background: #B8A038; color: white; }
+.type-ghost { background: #705898; color: white; }
+.type-dragon { background: #7038F8; color: white; }
+
+/* Scale Toggle Button */
+.scale-toggle-btn {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #4a5568;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.scale-toggle-btn:hover:enabled {
+  background: #2d3748;
+}
+.scale-toggle-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.scale-toggle-btn.active {
+  background: #2b6cb0;
+}
+.scale-toggle-btn.active:hover:enabled {
+  background: #2c5282;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

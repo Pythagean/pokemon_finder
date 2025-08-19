@@ -1,0 +1,237 @@
+.pokemon-app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  background-color: #f5f5f5;
+  padding: 20px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0 16px 0 32px; /* Reduced vertical padding */
+  margin-left: 300px; /* Same as sidebar width */
+  width: calc(100% - 300px);
+  max-width: calc(100% - 300px);
+  overflow: hidden; /* Prevent any scrolling */
+  box-sizing: border-box;
+  height: 100vh; /* Full viewport height */
+}
+
+.control-section {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+.control-group h3 {
+  margin: 10px 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.sort-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.sort-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  background-color: #e0e0e0;
+  color: #333;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.sort-buttons button:hover {
+  background-color: #d0d0d0;
+}
+
+.sort-buttons button.active {
+  background-color: #2196F3;
+  color: white;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 0 0 0;
+}
+
+.control-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.disable-all-btn {
+  background-color: #ff5252 !important;
+  color: white !important;
+}
+
+.enable-all-btn {
+  background-color: #4CAF50 !important;
+  color: white !important;
+}
+
+.filter-section {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+.filter-section h3 {
+  margin: 10px 0;
+  color: #333;
+  font-size: 1.2rem;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.filter-group {
+  margin-bottom: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filter-group h3 {
+  text-align: center;
+  width: 100%;
+}
+
+.type-filters,
+.habitat-filters,
+.color-filters,
+.evolution-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+/* Evolution stage button styles */
+.evolution-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: white;
+}
+
+.evolution-1 {
+  background-color: #4CAF50;
+}
+
+.evolution-2 {
+  background-color: #2196F3;
+}
+
+.evolution-3 {
+  background-color: #9C27B0;
+}
+
+/* Inactive state for all filter buttons */
+.type-btn.inactive,
+.habitat-btn.inactive,
+.color-btn.inactive,
+.evolution-btn.inactive {
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.type-btn.inactive:hover,
+.habitat-btn.inactive:hover,
+.color-btn.inactive:hover,
+.evolution-btn.inactive:hover {
+  opacity: 0.6;
+}
+
+/* Type button styles are already defined */
+
+.habitat-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.habitat-btn.active {
+  outline: 3px solid #333;
+}
+
+.habitat-cave { background-color: #695752; color: white; }
+.habitat-forest { background-color: #2d5a27; color: white; }
+.habitat-grassland { background-color: #7db356; color: black; }
+.habitat-mountain { background-color: #96785d; color: white; }
+.habitat-rare { background-color: #daa520; color: black; }
+.habitat-rough-terrain { background-color: #8b4513; color: white; }
+.habitat-sea { background-color: #1e90ff; color: white; }
+.habitat-urban { background-color: #808080; color: white; }
+.habitat-waters-edge { background-color: #87ceeb; color: black; }
+
+.color-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.color-btn.active {
+  outline: 3px solid #333;
+}
+
+.color-black { background-color: #000000; color: white; }
+.color-blue { background-color: #1e90ff; color: white; }
+.color-brown { background-color: #8b4513; color: white; }
+.color-gray { background-color: #808080; color: white; }
+.color-green { background-color: #2e8b57; color: white; }
+.color-pink { background-color: #ff69b4; color: black; }
+.color-purple { background-color: #800080; color: white; }
+.color-red { background-color: #ff0000; color: white; }
+.color-white { background-color: #ffffff; color: black; border: 1px solid #ddd; }
+.color-yellow { background-color: #ffd700; color: black; }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
