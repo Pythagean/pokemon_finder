@@ -10,11 +10,13 @@ function App() {
   const [error, setError] = useState(null);
   // Track which Pokémon are greyed out by their id
   const [greyed, setGreyed] = useState({});
+  // Track sidebar collapsed state
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
   // Track sorting state
   const [sortBy, setSortBy] = useState('id'); // 'id', 'height', or 'weight'
   const [sortDirection, setSortDirection] = useState('asc'); // 'asc' or 'desc'
-  // Track active type filter
-  const [activeType, setActiveType] = useState(null);
+  // Track active type filters (up to 2)
+  const [activeTypes, setActiveTypes] = useState([]);
   const [activeHabitat, setActiveHabitat] = useState(null);
   const [activeColor, setActiveColor] = useState(null);
   const [activeEvolutionStage, setActiveEvolutionStage] = useState(null);
@@ -69,7 +71,7 @@ function App() {
   // Handler to enable all Pokémon (remove all greyed out)
   const handleEnableAll = () => {
     setGreyed({});
-    setActiveType(null);
+    setActiveTypes([]);
     setActiveHabitat(null);
     setActiveColor(null);
     setActiveEvolutionStage(null);
@@ -79,10 +81,10 @@ function App() {
   const handleHabitatFilter = (habitat) => {
     if (habitat === activeHabitat) {
       setActiveHabitat(null);
-      applyAllFilters(activeType, null, activeColor); // Apply remaining filters
+      applyAllFilters(activeTypes, null, activeColor); // Apply remaining filters
     } else {
       setActiveHabitat(habitat);
-      applyAllFilters(activeType, habitat, activeColor); // Apply all filters with new habitat
+      applyAllFilters(activeTypes, habitat, activeColor); // Apply all filters with new habitat
     }
   };
 
@@ -90,10 +92,10 @@ function App() {
   const handleColorFilter = (color) => {
     if (color === activeColor) {
       setActiveColor(null);
-      applyAllFilters(activeType, activeHabitat, null, activeEvolutionStage); // Apply remaining filters
+      applyAllFilters(activeTypes, activeHabitat, null, activeEvolutionStage); // Apply remaining filters
     } else {
       setActiveColor(color);
-      applyAllFilters(activeType, activeHabitat, color, activeEvolutionStage); // Apply all filters with new color
+      applyAllFilters(activeTypes, activeHabitat, color, activeEvolutionStage); // Apply all filters with new color
     }
   };
 
@@ -101,10 +103,10 @@ function App() {
   const handleEvolutionStageFilter = (stage) => {
     if (stage === activeEvolutionStage) {
       setActiveEvolutionStage(null);
-      applyAllFilters(activeType, activeHabitat, activeColor, null); // Apply remaining filters
+      applyAllFilters(activeTypes, activeHabitat, activeColor, null); // Apply remaining filters
     } else {
       setActiveEvolutionStage(stage);
-      applyAllFilters(activeType, activeHabitat, activeColor, stage); // Apply all filters with new stage
+      applyAllFilters(activeTypes, activeHabitat, activeColor, stage); // Apply all filters with new stage
     }
   };
 
@@ -120,12 +122,12 @@ function App() {
     }
   };
 
-  const applyAllFilters = (newType = activeType, newHabitat = activeHabitat, newColor = activeColor, newEvolutionStage = activeEvolutionStage) => {
+  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColor = activeColor, newEvolutionStage = activeEvolutionStage) => {
     const newGreyed = {};
     pokemonList.forEach((pokemon) => {
-      // Check type filter
-      const passesTypeFilter = !newType || pokemon.types.some(t => 
-        t.type.name.toLowerCase() === newType.toLowerCase()
+      // Check type filters - pokemon must match all selected types
+      const passesTypeFilter = newTypes.length === 0 || newTypes.every(type =>
+        pokemon.types.some(t => t.type.name.toLowerCase() === type.toLowerCase())
       );
 
       // Check habitat filter
@@ -150,18 +152,34 @@ function App() {
 
   // Handler for type filter buttons
   const handleTypeFilter = (type) => {
-    if (type === activeType) {
-      setActiveType(null);
-      applyAllFilters(null); // Apply remaining filters
-    } else {
-      setActiveType(type);
-      applyAllFilters(type); // Apply all filters with new type
-    }
+    setActiveTypes(prevTypes => {
+      let newTypes;
+      if (prevTypes.includes(type)) {
+        // Remove the type if it's already selected
+        newTypes = prevTypes.filter(t => t !== type);
+      } else if (prevTypes.length < 2) {
+        // Add the type if we haven't reached the limit
+        newTypes = [...prevTypes, type];
+      } else {
+        // Replace the first type if we're at the limit
+        newTypes = [prevTypes[1], type];
+      }
+      applyAllFilters(newTypes);
+      return newTypes;
+    });
   };
 
   return (
     <div className="pokemon-app">
-      <aside className="sidebar">
+      <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+        <button 
+          className="sidebar-toggle"
+          onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
+          aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {isSidebarCollapsed ? '►' : '◄'}
+        </button>
         <div className="control-section">
           <div className="control-group">
             <h3>Sort by</h3>
@@ -205,8 +223,8 @@ function App() {
             <h3>Filter by Type</h3>
             <div className="type-filters">
               {types.map(type => {
-                const isThisActive = activeType === type;
-                const shouldBeInactive = activeType && !isThisActive;
+                const isThisActive = activeTypes.includes(type);
+                const shouldBeInactive = activeTypes.length > 0 && !isThisActive;
                 return (
                   <button
                     key={type}

@@ -11,8 +11,6 @@ import React from 'react';
  */
 
 export default function PokemonCard({ name, sprite, greyedOut = false, onClick }) {
-  const baseSize = 80; // Base size for all Pokémon
-
   return (
     <div
       className={`pokemon-card${greyedOut ? ' pokemon-card-greyed' : ''}`}
@@ -26,7 +24,6 @@ export default function PokemonCard({ name, sprite, greyedOut = false, onClick }
         src={sprite}
         alt={name}
         className="pokemon-card-img"
-        style={{ width: baseSize, height: baseSize }}
         loading="lazy"
       />
     </div>

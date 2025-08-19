@@ -1,6 +1,7 @@
 // components/PokemonGrid.js
 import React, { useState } from 'react';
 import PokemonCard from './PokemonCard';
+import './PokemonGrid.css';
 
 /**
  * Grid for displaying all Pokémon
