@@ -18,7 +18,7 @@ function App() {
   // Track active type filters (up to 2)
   const [activeTypes, setActiveTypes] = useState([]);
   const [activeHabitat, setActiveHabitat] = useState(null);
-  const [activeColor, setActiveColor] = useState(null);
+  const [activeColors, setActiveColors] = useState([]);
   const [activeEvolutionStage, setActiveEvolutionStage] = useState(null);
 
   // Gen 1 Pokémon types
@@ -34,11 +34,172 @@ function App() {
   ];
 
   const colors = [
-    'Black', 'Blue', 'Brown', 'Gray', 'Green',
+    'Black', 'Blue', 'Brown', 'Gray', 'Green', 'Orange',
     'Pink', 'Purple', 'Red', 'White', 'Yellow'
   ];
 
   const evolutionStages = [1, 2, 3];
+
+  // Custom color override mapping
+  const customPokemonColors = {
+    'bulbasaur': ['green'],
+    'ivysaur': ['green'],
+    'venusaur': ['green'],
+    'charmander': ['orange'],
+    'charmeleon': ['red'],
+    'charizard': ['orange'],
+    'squirtle': ['blue'],
+    'wartortle': ['blue'],
+    'blastoise': ['blue'],
+    'caterpie': ['green'],
+    'metapod': ['green'],
+    'butterfree': ['white', 'purple'],
+    'weedle': ['brown'],
+    'kakuna': ['yellow'],
+    'beedrill': ['yellow', 'black'],
+    'pidgey': ['brown'],
+    'pidgeotto': ['brown'],
+    'pidgeot': ['brown'],
+    'rattata': ['purple'],
+    'raticate': ['brown'],
+    'spearow': ['brown'],
+    'fearow': ['brown'],
+    'ekans': ['purple'],
+    'arbok': ['purple'],
+    'pikachu': ['yellow'],
+    'raichu': ['orange'],
+    'sandshrew': ['yellow'],
+    'sandslash': ['yellow', 'brown'],
+    'nidoran-f': ['blue'],
+    'nidorina': ['blue'],
+    'nidoqueen': ['blue'],
+    'nidoran-m': ['purple'],
+    'nidorino': ['purple'],
+    'nidoking': ['purple'],
+    'clefairy': ['pink'],
+    'clefable': ['pink'],
+    'vulpix': ['brown', 'orange'],
+    'ninetales': ['yellow'],
+    'jigglypuff': ['pink'],
+    'wigglytuff': ['pink'],
+    'zubat': ['blue', 'purple'],
+    'golbat': ['purple'],
+    'oddish': ['blue', 'green'],
+    'gloom': ['blue', 'orange'],
+    'vileplume': ['blue', 'red'],
+    'paras': ['orange'],
+    'parasect': ['orange', 'red'],
+    'venonat': ['purple'],
+    'venomoth': ['purple'],
+    'diglett': ['brown'],
+    'dugtrio': ['brown'],
+    'meowth': ['yellow'],
+    'persian': ['yellow'],
+    'psyduck': ['yellow'],
+    'golduck': ['blue'],
+    'mankey': ['brown', 'white'],
+    'primeape': ['brown', 'white'],
+    'growlithe': ['orange', 'yellow'],
+    'arcanine': ['orange', 'yellow'],
+    'poliwag': ['blue', 'white'],
+    'poliwhirl': ['blue', 'white'],
+    'poliwrath': ['blue', 'white'],
+    'abra': ['yellow'],
+    'kadabra': ['yellow'],
+    'alakazam': ['yellow'],
+    'machop': ['gray'],
+    'machoke': ['purple'],
+    'machamp': ['gray'],
+    'bellsprout': ['green', 'yellow'],
+    'weepinbell': ['green', 'yellow'],
+    'victreebel': ['green', 'yellow'],
+    'tentacool': ['blue', 'red'],
+    'tentacruel': ['blue', 'red'],
+    'geodude': ['gray'],
+    'graveler': ['gray'],
+    'golem': ['gray'],
+    'ponyta': ['orange', 'yellow'],
+    'rapidash': ['orange', 'yellow'],
+    'slowpoke': ['pink'],
+    'slowbro': ['pink'],
+    'magnemite': ['gray'],
+    'magneton': ['gray'],
+    'farfetchd': ['brown'],
+    'doduo': ['brown'],
+    'dodrio': ['brown'],
+    'seel': ['white'],
+    'dewgong': ['white'],
+    'grimer': ['purple'],
+    'muk': ['purple'],
+    'shellder': ['black', 'purple'],
+    'cloyster': ['purple'],
+    'gastly': ['purple'],
+    'haunter': ['purple'],
+    'gengar': ['purple'],
+    'onix': ['gray'],
+    'drowzee': ['yellow', 'brown'],
+    'hypno': ['yellow'],
+    'krabby': ['orange', 'white'],
+    'kingler': ['orange', 'white'],
+    'voltorb': ['red', 'white'],
+    'electrode': ['red', 'white'],
+    'exeggcute': ['pink'],
+    'exeggutor': ['brown', 'yellow'],
+    'cubone': ['brown'],
+    'marowak': ['brown'],
+    'hitmonlee': ['brown'],
+    'hitmonchan': ['brown'],
+    'lickitung': ['pink'],
+    'koffing': ['purple'],
+    'weezing': ['purple'],
+    'rhyhorn': ['gray'],
+    'rhydon': ['gray'],
+    'chansey': ['pink'],
+    'tangela': ['blue'],
+    'kangaskhan': ['brown'],
+    'horsea': ['blue'],
+    'seadra': ['blue'],
+    'goldeen': ['red', 'white'],
+    'seaking': ['red', 'white'],
+    'staryu': ['brown', 'yellow'],
+    'starmie': ['purple'],
+    'mr-mime': ['pink', 'white'],
+    'scyther': ['green'],
+    'jynx': ['purple', 'red'],
+    'electabuzz': ['yellow', 'black'],
+    'magmar': ['red', 'yellow'],
+    'pinsir': ['brown'],
+    'tauros': ['brown'],
+    'magikarp': ['orange', 'red'],
+    'gyarados': ['blue'],
+    'lapras': ['blue'],
+    'ditto': ['purple'],
+    'eevee': ['brown'],
+    'vaporeon': ['blue'],
+    'jolteon': ['yellow'],
+    'flareon': ['orange'],
+    'porygon': ['blue', 'pink'],
+    'omanyte': ['blue', 'white'],
+    'omastar': ['blue', 'white'],
+    'kabuto': ['black', 'brown'],
+    'kabutops': ['brown'],
+    'aerodactyl': ['gray'],
+    'snorlax': ['blue', 'white'],
+    'articuno': ['blue'],
+    'zapdos': ['yellow'],
+    'moltres': ['yellow'],
+    'dratini': ['blue'],
+    'dragonair': ['blue'],
+    'dragonite': ['orange'],
+    'mewtwo': ['gray', 'purple'],
+    'mew': ['pink']
+  };
+
+  // Helper function to get custom colors for a Pokemon
+  const getPokemonColors = (pokemonName) => {
+    const normalizedName = pokemonName.toLowerCase().replace(/[♀♂]/, '').replace(/'/g, '');
+    return customPokemonColors[normalizedName] || [];
+  };
 
   useEffect(() => {
     async function loadPokemon() {
@@ -73,7 +234,7 @@ function App() {
     setGreyed({});
     setActiveTypes([]);
     setActiveHabitat(null);
-    setActiveColor(null);
+    setActiveColors([]);
     setActiveEvolutionStage(null);
   };
 
@@ -81,32 +242,35 @@ function App() {
   const handleHabitatFilter = (habitat) => {
     if (habitat === activeHabitat) {
       setActiveHabitat(null);
-      applyAllFilters(activeTypes, null, activeColor); // Apply remaining filters
+      applyAllFilters(activeTypes, null, activeColors); // Apply remaining filters
     } else {
       setActiveHabitat(habitat);
-      applyAllFilters(activeTypes, habitat, activeColor); // Apply all filters with new habitat
+      applyAllFilters(activeTypes, habitat, activeColors); // Apply all filters with new habitat
     }
   };
 
   // Handler for color filter buttons
   const handleColorFilter = (color) => {
-    if (color === activeColor) {
-      setActiveColor(null);
-      applyAllFilters(activeTypes, activeHabitat, null, activeEvolutionStage); // Apply remaining filters
+    let newColors;
+    if (activeColors.includes(color)) {
+      // Remove color if already selected
+      newColors = activeColors.filter(c => c !== color);
     } else {
-      setActiveColor(color);
-      applyAllFilters(activeTypes, activeHabitat, color, activeEvolutionStage); // Apply all filters with new color
+      // Add color to selection
+      newColors = [...activeColors, color];
     }
+    setActiveColors(newColors);
+    applyAllFilters(activeTypes, activeHabitat, newColors, activeEvolutionStage);
   };
 
   // Handler for evolution stage filter buttons
   const handleEvolutionStageFilter = (stage) => {
     if (stage === activeEvolutionStage) {
       setActiveEvolutionStage(null);
-      applyAllFilters(activeTypes, activeHabitat, activeColor, null); // Apply remaining filters
+      applyAllFilters(activeTypes, activeHabitat, activeColors, null); // Apply remaining filters
     } else {
       setActiveEvolutionStage(stage);
-      applyAllFilters(activeTypes, activeHabitat, activeColor, stage); // Apply all filters with new stage
+      applyAllFilters(activeTypes, activeHabitat, activeColors, stage); // Apply all filters with new stage
     }
   };
 
@@ -122,7 +286,7 @@ function App() {
     }
   };
 
-  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColor = activeColor, newEvolutionStage = activeEvolutionStage) => {
+  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage) => {
     const newGreyed = {};
     pokemonList.forEach((pokemon) => {
       // Check type filters - pokemon must match all selected types
@@ -134,9 +298,12 @@ function App() {
       const passesHabitatFilter = !newHabitat || 
         pokemon.habitat.toLowerCase() === newHabitat.toLowerCase();
 
-      // Check color filter
-      const passesColorFilter = !newColor || 
-        pokemon.color.toLowerCase() === newColor.toLowerCase();
+      // Check color filter using custom color mapping - pokemon must match ALL selected colors
+      const pokemonCustomColors = getPokemonColors(pokemon.name);
+      const passesColorFilter = newColors.length === 0 || 
+        newColors.every(selectedColor => 
+          pokemonCustomColors.some(color => color.toLowerCase() === selectedColor.toLowerCase())
+        );
 
       // Check evolution stage filter
       const passesEvolutionFilter = !newEvolutionStage || 
@@ -263,12 +430,11 @@ function App() {
             <h3>Filter by Color</h3>
             <div className="color-filters">
               {colors.map(color => {
-                const isThisActive = activeColor === color;
-                const shouldBeInactive = activeColor && !isThisActive;
+                const isThisActive = activeColors.includes(color);
                 return (
                   <button
                     key={color}
-                    className={`color-btn color-${color.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''}`}
+                    className={`color-btn color-${color.toLowerCase()} ${isThisActive ? 'active' : ''}`}
                     onClick={() => handleColorFilter(color)}
                     disabled={loading || error}
                   >
