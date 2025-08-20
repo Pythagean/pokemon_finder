@@ -11,7 +11,7 @@ function App() {
   // Track which Pokémon are greyed out by their id
   const [greyed, setGreyed] = useState({});
   // Track sidebar collapsed state
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
   // Track sorting state
   const [sortBy, setSortBy] = useState('id'); // 'id', 'height', or 'weight'
   const [sortDirection, setSortDirection] = useState('asc'); // 'asc' or 'desc'
@@ -341,10 +341,25 @@ function App() {
       <button 
         className="sidebar-toggle"
         onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-        aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-        title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-label={isSidebarCollapsed ? "Show filters" : "Hide filters"}
+        title={isSidebarCollapsed ? "Show filters" : "Hide filters"}
       >
-        {isSidebarCollapsed ? '►' : '◄'}
+        {/* PNG icon (place filter.png in the project's public/ folder) */}
+        <img
+          src={process.env.PUBLIC_URL + '/filter.png'}
+          alt="Filter"
+          className="filter-icon-img"
+          onLoad={(e) => {
+            try {
+              const fallback = e.target.parentNode.querySelector('.filter-icon');
+              if (fallback) fallback.style.display = 'none';
+              e.target.style.display = 'inline-block';
+            } catch (err) {}
+          }}
+          onError={(e) => { e.target.style.display = 'none'; }}
+        />
+        {/* CSS fallback icon */}
+        <span className="filter-icon" aria-hidden="true"></span>
       </button>
       <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="control-section">

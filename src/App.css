@@ -4,9 +4,15 @@
   width: 100%;
 }
 
+:root {
+  --sidebar-width: 300px;
+  --sidebar-hidden-extra: 12px; /* extra to hide shadows/padding when collapsed */
+  --sidebar-collapsed-visible: 0px; /* amount left visible when collapsed */
+}
+
 .sidebar {
-  width: 300px;
-  min-width: 300px;
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
   background-color: #f5f5f5;
   padding: 20px 16px 20px 20px;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
@@ -20,7 +26,25 @@
 }
 
 .sidebar.collapsed {
-  transform: translateX(-300px);
+  /* leave a small visible sliver when collapsed */
+  transform: translateX(calc(-1 * (var(--sidebar-width) - var(--sidebar-collapsed-visible))));
+  box-shadow: none; /* remove shadow so no edge peeks through */
+}
+
+/* When collapsed, hide all interactive content inside the sidebar but keep the
+   background/sliver visible. This prevents buttons, headings and sections from
+   peeking out while preserving the small visible edge for the toggle. */
+.sidebar.collapsed * {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Keep the collapsed sliver visually clean by ensuring the container background
+   remains visible (we only hide inner elements). Add a short transition for
+   smoothness when opening/closing. */
+.sidebar > * {
+  transition: opacity 0.18s ease-in-out, visibility 0.18s ease-in-out;
 }
 
 .pokemon-app.sidebar-collapsed .sidebar-toggle {
@@ -30,7 +54,7 @@
 .sidebar-toggle {
   position: fixed;
   right: auto;
-  left: 280px;
+  left: calc(var(--sidebar-width) - 20px);
   top: 20px;
   width: 24px;
   height: 32px;
@@ -47,11 +71,55 @@
   color: #666;
   z-index: 11;
   transition: all 0.3s ease-in-out;
+  overflow: visible; /* allow the icon to show outside the button if needed */
 }
 
 .sidebar-toggle:hover {
   background-color: #e0e0e0;
   color: #333;
+}
+
+.filter-icon {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.filter-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 10px;
+  border: 2px solid currentColor;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  clip-path: polygon(0 0, 100% 0, 75% 100%, 25% 100%);
+}
+
+.filter-icon::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+}
+
+/* PNG icon inside the toggle button. If the image fails to load, it will be hidden
+   and the CSS funnel (.filter-icon) will remain as a fallback. */
+.filter-icon-img {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  z-index: 12;
 }
 
 .main-content {
@@ -72,7 +140,7 @@
   background: white;
   padding: 15px;
   border-radius: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   text-align: center;
 }
 
@@ -149,7 +217,7 @@
   background: white;
   padding: 15px;
   border-radius: 8px;
-  margin: 15px 0;
+  margin: 8px 0;
 }
 
 .filter-section h3 {
@@ -161,7 +229,7 @@
 }
 
 .filter-group {
-  margin-bottom: 25px;
+  margin-bottom: 5px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -401,11 +469,16 @@ button:disabled {
   .pokemon-app {
     position: relative;
   }
-  
+  /* Mobile: smaller sidebar */
+  :root {
+    --sidebar-width: 200px;
+    --sidebar-hidden-extra: 40px; /* account for padding and shadows on mobile */
+  }
+
   .sidebar {
-    width: 200px;
-    min-width: 200px;
-    transform: translateX(-240px);
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    transform: translateX(calc(-1 * (var(--sidebar-width) + var(--sidebar-hidden-extra))));
     z-index: 1000;
     transition: transform 0.3s ease-in-out;
     height: 100vh;
@@ -418,7 +491,8 @@ button:disabled {
   }
   
   .sidebar.collapsed {
-    transform: translateX(-240px);
+    transform: translateX(calc(-1 * (var(--sidebar-width) + var(--sidebar-hidden-extra))));
+    box-shadow: none;
   }
   
   .sidebar:not(.collapsed) {
@@ -427,7 +501,7 @@ button:disabled {
   
   .sidebar-toggle {
     position: fixed !important;
-    left: 180px !important;
+    left: calc(var(--sidebar-width) - 20px) !important;
     top: 10px !important;
     background-color: #2196F3 !important;
     color: white !important;
