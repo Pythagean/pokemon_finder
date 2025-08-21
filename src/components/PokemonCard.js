@@ -10,7 +10,15 @@ import React from 'react';
  * @param {boolean} [props.greyedOut] - If true, show greyed out (for future filters)
  */
 
-export default function PokemonCard({ name, sprite, greyedOut = false, onClick }) {
+export default function PokemonCard({ id, name, remoteSprite, greyedOut = false, onClick }) {
+  const localPath = process.env.PUBLIC_URL + `/pokemon/${id}.png`;
+
+  function handleError(e) {
+    if (e && e.target && e.target.src !== remoteSprite) {
+      e.target.src = remoteSprite || e.target.src;
+    }
+  }
+
   return (
     <div
       className={`pokemon-card${greyedOut ? ' pokemon-card-greyed' : ''}`}
@@ -21,10 +29,11 @@ export default function PokemonCard({ name, sprite, greyedOut = false, onClick }
       aria-pressed={greyedOut}
     >
       <img
-        src={sprite}
+        src={localPath}
         alt={name}
         className="pokemon-card-img"
         loading="lazy"
+        onError={handleError}
       />
     </div>
   );

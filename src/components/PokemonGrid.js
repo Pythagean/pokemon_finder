@@ -1,5 +1,5 @@
 // components/PokemonGrid.js
-import React, { useState } from 'react';
+import React from 'react';
 import PokemonCard from './PokemonCard';
 import './PokemonGrid.css';
 
@@ -16,8 +16,9 @@ export default function PokemonGrid({ pokemonList, greyed = {}, onCardClick }) {
         {pokemonList.map((pokemon) => (
           <PokemonCard
             key={pokemon.id}
+            id={pokemon.id}
             name={pokemon.name}
-            sprite={pokemon.sprites?.other?.["official-artwork"]?.front_default}
+            remoteSprite={pokemon.sprites?.other?.["official-artwork"]?.front_default}
             greyedOut={!!greyed[pokemon.id]}
             onClick={() => onCardClick && onCardClick(pokemon.id)}
           />
