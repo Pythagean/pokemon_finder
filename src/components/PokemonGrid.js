@@ -12,7 +12,7 @@ import './PokemonGrid.css';
 export default function PokemonGrid({ pokemonList, greyed = {}, onCardClick }) {
   return (
     <div className="pokemon-grid-wrapper">
-      <div className="pokemon-grid">
+  <div className="pokemon-grid pokemon-grid-desktop pokemon-grid-mobile">
         {pokemonList.map((pokemon) => (
           <PokemonCard
             key={pokemon.id}

@@ -4,8 +4,22 @@
 }
 
 .pokemon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 4px;
+  /* base wrapper; specific layouts are provided by -desktop and -mobile variants */
   width: 100%;
+}
+
+@media (min-width: 769px) {
+  .pokemon-grid-desktop {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pokemon-grid-mobile {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+    gap: 2px;
+  }
 }
