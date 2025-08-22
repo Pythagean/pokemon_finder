@@ -482,6 +482,10 @@ function App() {
         </div>
       </aside>
       <main className="main-content">
+        {/* Mobile header shown only on narrow screens */}
+        <div className="mobile-header" aria-hidden={false}>
+          <h1>Pokemon Finder</h1>
+        </div>
         {loading && <div className="pokemon-loading">Loading Pokémon...</div>}
         {error && <div className="pokemon-error">{error}</div>}
         {!loading && !error && (

@@ -4,6 +4,64 @@
   width: 100%;
 }
 
+/* Import a friendly display font for the mobile header */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+/* Mobile header styles */
+.mobile-header {
+  display: block;
+  position: relative; /* in-flow on desktop so sidebar can overlay it when expanded */
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+}
+
+/* Desktop (in-flow) header styling: use the same playful font, gold fill and blue outline,
+   and center the title horizontally. The sidebar z-index is higher so it will
+   overlay this header when expanded. */
+.mobile-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-family: 'Luckiest Guy', 'Segoe UI', Roboto, -apple-system, sans-serif;
+  color: #ffd700; /* gold/yellow */
+  -webkit-text-stroke: 1px #1e6fff; /* blue outline for WebKit */
+  text-shadow:
+    1px 1px 0 #1e6fff,
+    -1px 1px 0 #1e6fff,
+    1px -1px 0 #1e6fff,
+    -1px -1px 0 #1e6fff,
+    0 1px 0 #1e6fff;
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  /* When the sidebar is open on mobile, hide the header to avoid overlap */
+  .pokemon-app:not(.sidebar-collapsed) .mobile-header {
+    display: none;
+  }
+  .mobile-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 10px;
+    z-index: 1002;
+    height: 40px;
+    pointer-events: none;
+    /* no inline text-align here; we'll absolutely center the H1 for pixel-perfect centering */
+  }
+    .mobile-header h1 {
+      margin: 0;
+      font-size: 1.3rem; /* slightly smaller on mobile */
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      max-width: calc(100% - 96px); /* leave room for the toggle and some breathing space */
+      text-align: center;
+    }
+}
+
 :root {
   --sidebar-width: 300px;
   --sidebar-hidden-extra: 12px; /* extra to hide shadows/padding when collapsed */
@@ -20,7 +78,8 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 10;
+  /* default z-index for sidebar when expanded; will overlay header when open */
+  z-index: 1003;
   transition: transform 0.3s ease-in-out;
   overflow-y: auto;
 }
@@ -29,6 +88,8 @@
   /* leave a small visible sliver when collapsed */
   transform: translateX(calc(-1 * (var(--sidebar-width) - var(--sidebar-collapsed-visible))));
   box-shadow: none; /* remove shadow so no edge peeks through */
+  /* when collapsed keep below header but above page content */
+  z-index: 1001;
 }
 
 /* When collapsed, hide all interactive content inside the sidebar but keep the
@@ -69,7 +130,8 @@
   font-size: 14px;
   font-weight: bold;
   color: #666;
-  z-index: 11;
+  /* ensure toggle stays above the header and sidebar */
+  z-index: 1005;
   transition: all 0.3s ease-in-out;
   overflow: visible; /* allow the icon to show outside the button if needed */
 }
@@ -517,9 +579,10 @@ button:disabled {
   }
   
   .main-content {
-    margin-left: 0;
-    width: 100%;
-    padding: 16px 16px;
+  margin-left: 0;
+  width: 100%;
+  padding: 16px 16px;
+  padding-top: 64px; /* space for mobile header/toggle */
   }
   
   .sidebar.collapsed + .main-content {
@@ -583,7 +646,8 @@ button:disabled {
   }
   
   .main-content {
-    padding: 8px 12px;
+  padding: 8px 12px;
+  padding-top: 56px;
   }
   
   .sidebar {
