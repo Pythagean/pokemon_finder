@@ -12,14 +12,14 @@ function App() {
   const [greyed, setGreyed] = useState({});
   // Track sidebar collapsed state
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
-  // Track sorting state
-  const [sortBy, setSortBy] = useState('id'); // 'id', 'height', or 'weight'
-  const [sortDirection, setSortDirection] = useState('asc'); // 'asc' or 'desc'
+  // Sorting removed (UI disabled)
   // Track active type filters (up to 2)
   const [activeTypes, setActiveTypes] = useState([]);
   const [activeHabitat, setActiveHabitat] = useState(null);
   const [activeColors, setActiveColors] = useState([]);
   const [activeEvolutionStage, setActiveEvolutionStage] = useState(null);
+    const [activeHeightRange, setActiveHeightRange] = useState([]);
+    const [activeWeightRange, setActiveWeightRange] = useState([]);
 
   // Gen 1 Pokémon types
   const types = [
@@ -39,6 +39,25 @@ function App() {
   ];
 
   const evolutionStages = [1, 2, 3];
+
+  // Height ranges are based on PokéAPI height (decimeters)
+  const heightRanges = [
+    { key: 'under50cm', label: 'Tiny (<50 cm)' },
+    { key: '50-100cm', label: 'Small (50 cm – 1 m)' },
+  { key: '1-1_5m', label: 'Average (1 m – 1.5 m)' },
+  { key: '1_5-2m', label: 'Big (1.5 m – 2 m)' },
+    { key: 'over2m', label: 'Huge (>2 m)' }
+  ];
+
+    // Weight ranges in 25kg increments with a single 'over100kg' bucket
+    // (PokéAPI weight is in hectograms: 1 kg = 10 units)
+    const weightRanges = [
+      { key: '0-25kg', label: '0–25 kg' },
+      { key: '25-50kg', label: '25–50 kg' },
+      { key: '50-75kg', label: '50–75 kg' },
+      { key: '75-100kg', label: '75–100 kg' },
+      { key: 'over100kg', label: 'Over 100 kg' }
+    ];
 
   // Custom color override mapping
   const customPokemonColors = {
@@ -208,13 +227,26 @@ function App() {
         const data = await fetchAllPokemon();
         setPokemonList(data);
       } catch (err) {
-        setError('Failed to load Pokémon.');
+        // show a more helpful message for debugging
+        setError(`Failed to load Pokémon: ${err.message}`);
       } finally {
         setLoading(false);
       }
     }
     loadPokemon();
   }, []);
+
+  const retryLoad = () => {
+    setError(null);
+    setLoading(true);
+    fetchAllPokemon().then(data => {
+      setPokemonList(data);
+      setLoading(false);
+    }).catch(err => {
+      setError(`Failed to load Pokémon: ${err.message}`);
+      setLoading(false);
+    });
+  };
 
   // Handler to toggle a single Pokémon's greyed state
   const handleCardClick = (id) => {
@@ -236,6 +268,7 @@ function App() {
     setActiveHabitat(null);
     setActiveColors([]);
     setActiveEvolutionStage(null);
+    setActiveHeightRange([]);
   };
 
   // Handler for habitat filter buttons
@@ -267,26 +300,43 @@ function App() {
   const handleEvolutionStageFilter = (stage) => {
     if (stage === activeEvolutionStage) {
       setActiveEvolutionStage(null);
-      applyAllFilters(activeTypes, activeHabitat, activeColors, null); // Apply remaining filters
+      applyAllFilters(activeTypes, activeHabitat, activeColors, null, activeHeightRange); // Apply remaining filters
     } else {
       setActiveEvolutionStage(stage);
-      applyAllFilters(activeTypes, activeHabitat, activeColors, stage); // Apply all filters with new stage
+      applyAllFilters(activeTypes, activeHabitat, activeColors, stage, activeHeightRange); // Apply all filters with new stage
     }
+  };
+
+  // Handler for height range filter buttons (multi-select)
+  const handleHeightFilter = (rangeKey) => {
+    setActiveHeightRange(prev => {
+      let next;
+      if (prev.includes(rangeKey)) {
+        next = prev.filter(k => k !== rangeKey);
+      } else {
+        next = [...prev, rangeKey];
+      }
+      applyAllFilters(activeTypes, activeHabitat, activeColors, activeEvolutionStage, next);
+      return next;
+    });
+  };
+
+  // Handler for weight range filter buttons (multi-select)
+  const handleWeightFilter = (rangeKey) => {
+    setActiveWeightRange(prev => {
+      let next;
+      if (prev.includes(rangeKey)) {
+        next = prev.filter(k => k !== rangeKey);
+      } else {
+        next = [...prev, rangeKey];
+      }
+      applyAllFilters(activeTypes, activeHabitat, activeColors, activeEvolutionStage, activeHeightRange, next);
+      return next;
+    });
   };
 
   // Helper function to apply all active filters
-  const handleSort = (type) => {
-    if (sortBy === type) {
-      // If clicking the same sort type, toggle direction
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      // If clicking a new sort type, set it with ascending direction
-      setSortBy(type);
-      setSortDirection('asc');
-    }
-  };
-
-  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage) => {
+  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage, newHeightRange = activeHeightRange, newWeightRange = activeWeightRange) => {
     const newGreyed = {};
     pokemonList.forEach((pokemon) => {
       // Check type filters - pokemon must match all selected types
@@ -309,8 +359,54 @@ function App() {
       const passesEvolutionFilter = !newEvolutionStage || 
         pokemon.evolutionStage === newEvolutionStage;
 
+      // Check height filter. PokéAPI height is in decimeters (dm).
+      let passesHeightFilter = true;
+      // newHeightRange is an array of selected range keys (multi-select). If empty -> passes.
+      if (Array.isArray(newHeightRange) && newHeightRange.length > 0) {
+        const h = Number(pokemon.height || 0); // in dm
+        // If any selected range matches, the pokemon passes the height filter
+        passesHeightFilter = newHeightRange.some(rangeKey => {
+          switch (rangeKey) {
+            case 'under50cm':
+              return h < 5; // < 50 cm
+            case '50-100cm':
+              return h >= 5 && h < 10; // 50cm - 1m
+            case '1-1_5m':
+              return h >= 10 && h < 15; // 1.0m - 1.5m
+            case '1_5-2m':
+              return h >= 15 && h < 20; // 1.5m - 2.0m
+            case 'over2m':
+              return h >= 20; // >= 2m
+            default:
+              return false;
+          }
+        });
+      }
+
       // Grey out if it doesn't pass ALL active filters
-      if (!(passesTypeFilter && passesHabitatFilter && passesColorFilter && passesEvolutionFilter)) {
+      // Check weight filter. PokéAPI weight is in hectograms (hg): 1 kg = 10 units
+      let passesWeightFilter = true;
+      if (Array.isArray(newWeightRange) && newWeightRange.length > 0) {
+        const w = Number(pokemon.weight || 0); // in hg
+        passesWeightFilter = newWeightRange.some(rangeKey => {
+          switch (rangeKey) {
+            case '0-25kg':
+              return w >= 0 && w < 250; // 0 - 25 kg -> 0 - 250 hg
+            case '25-50kg':
+              return w >= 250 && w < 500;
+            case '50-75kg':
+              return w >= 500 && w < 750;
+            case '75-100kg':
+              return w >= 750 && w < 1000;
+            case 'over100kg':
+              return w >= 1000; // >= 100 kg
+            default:
+              return false;
+          }
+        });
+      }
+
+      if (!(passesTypeFilter && passesHabitatFilter && passesColorFilter && passesEvolutionFilter && passesHeightFilter && passesWeightFilter)) {
         newGreyed[pokemon.id] = true;
       }
     });
@@ -363,33 +459,6 @@ function App() {
       </button>
       <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="control-section">
-          <div className="control-group">
-            <h3>Sort by</h3>
-            <div className="sort-buttons">
-              <button 
-                className={`sort-btn ${sortBy === 'id' ? 'active' : ''}`}
-                onClick={() => handleSort('id')}
-                disabled={loading || error}
-              >
-                {`Pokédex # ${sortBy === 'id' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}`}
-              </button>
-              <button 
-                className={`sort-btn ${sortBy === 'height' ? 'active' : ''}`}
-                onClick={() => handleSort('height')}
-                disabled={loading || error}
-              >
-                Height {sortBy === 'height' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </button>
-              <button 
-                className={`sort-btn ${sortBy === 'weight' ? 'active' : ''}`}
-                onClick={() => handleSort('weight')}
-                disabled={loading || error}
-              >
-                Weight {sortBy === 'weight' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </button>
-            </div>
-          </div>
-
           <div className="control-buttons">
             <button className="disable-all-btn" onClick={handleDisableAll} disabled={loading || error}>
               Hide All
@@ -479,6 +548,46 @@ function App() {
               })}
             </div>
           </div>
+
+          <div className="filter-group">
+            <h3>Filter by Height</h3>
+            <div className="height-filters">
+              {heightRanges.map(range => {
+                const isThisActive = Array.isArray(activeHeightRange) && activeHeightRange.includes(range.key);
+                const shouldBeInactive = Array.isArray(activeHeightRange) && activeHeightRange.length > 0 && !isThisActive;
+                return (
+                  <button
+                    key={range.key}
+                    className={`height-btn height-${range.key} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''}`}
+                    onClick={() => handleHeightFilter(range.key)}
+                    disabled={loading || error}
+                  >
+                    {range.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="filter-group">
+            <h3>Filter by Weight</h3>
+            <div className="weight-filters">
+              {weightRanges.map(range => {
+                const isThisActive = Array.isArray(activeWeightRange) && activeWeightRange.includes(range.key);
+                const shouldBeInactive = Array.isArray(activeWeightRange) && activeWeightRange.length > 0 && !isThisActive;
+                return (
+                  <button
+                    key={range.key}
+                    className={`height-btn weight-btn weight-${range.key} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''}`}
+                    onClick={() => handleWeightFilter(range.key)}
+                    disabled={loading || error}
+                  >
+                    {range.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </aside>
       <main className="main-content">
@@ -487,30 +596,17 @@ function App() {
           <h1>Pokemon Finder</h1>
         </div>
         {loading && <div className="pokemon-loading">Loading Pokémon...</div>}
-        {error && <div className="pokemon-error">{error}</div>}
+        {error && (
+          <div className="pokemon-error">
+            {error}
+            <div style={{ marginTop: 8 }}>
+              <button onClick={retryLoad}>Retry</button>
+            </div>
+          </div>
+        )}
         {!loading && !error && (
           <PokemonGrid
-            pokemonList={[...pokemonList].sort((a, b) => {
-              if (!sortBy) return 0;
-              let aValue, bValue;
-              switch(sortBy) {
-                case 'id':
-                  aValue = a.id;
-                  bValue = b.id;
-                  break;
-                case 'height':
-                  aValue = a.height;
-                  bValue = b.height;
-                  break;
-                case 'weight':
-                  aValue = a.weight;
-                  bValue = b.weight;
-                  break;
-                default:
-                  return 0;
-              }
-              return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-            })}
+              pokemonList={pokemonList}
             greyed={greyed}
             onCardClick={handleCardClick}
           />

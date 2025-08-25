@@ -10,13 +10,22 @@ import React from 'react';
  * @param {boolean} [props.greyedOut] - If true, show greyed out (for future filters)
  */
 
-export default function PokemonCard({ id, name, remoteSprite, greyedOut = false, onClick }) {
-  const localPath = process.env.PUBLIC_URL + `/pokemon/${id}.png`;
+export default function PokemonCard({ id, name, remoteSmall, remoteLarge, greyedOut = false, onClick }) {
+  // Try small local thumbnail first, then full local, then remote small, then remote large
+  const localThumb = process.env.PUBLIC_URL + `/pokemon/thumbs/${id}.png`;
+  const localFull = process.env.PUBLIC_URL + `/pokemon/${id}.png`;
+
+  // Prefer thumb if present, otherwise prefer the smaller remote sprite before falling back
+  // to the large local full artwork to speed up initial loads when thumbnails aren't generated.
+  const srcCandidates = [localThumb, remoteSmall, localFull, remoteLarge];
 
   function handleError(e) {
-    if (e && e.target && e.target.src !== remoteSprite) {
-      e.target.src = remoteSprite || e.target.src;
-    }
+    if (!e || !e.target) return;
+    const current = e.target.src;
+    // Find next candidate that's different from current
+    const idx = srcCandidates.indexOf(current);
+    const next = idx >= 0 && idx < srcCandidates.length - 1 ? srcCandidates[idx + 1] : null;
+    if (next && next !== current) e.target.src = next;
   }
 
   return (
@@ -29,7 +38,7 @@ export default function PokemonCard({ id, name, remoteSprite, greyedOut = false,
       aria-pressed={greyedOut}
     >
       <img
-        src={localPath}
+        src={localThumb}
         alt={name}
         className="pokemon-card-img"
         loading="lazy"

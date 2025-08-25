@@ -17,10 +17,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "download-images": "node scripts/download_pokemon_images.js",
+    "eject": "react-scripts eject",
+    "download-images": "node scripts/download_pokemon_images.js",
+    "download-data": "node scripts/download_pokemon_data.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "generate-thumbs": "node scripts/generate_thumbs.js"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.3.0"
+    "gh-pages": "^6.3.0",
+    "sharp": "^0.34.3"
   }
 }

@@ -306,7 +306,8 @@
 .type-filters,
 .habitat-filters,
 .color-filters,
-.evolution-filters {
+.evolution-filters,
+.height-filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -373,7 +374,8 @@
 .type-btn.inactive,
 .habitat-btn.inactive,
 .color-btn.inactive,
-.evolution-btn.inactive {
+.evolution-btn.inactive,
+.height-btn.inactive {
   opacity: 0.4;
   transition: opacity 0.2s ease;
 }
@@ -381,8 +383,33 @@
 .type-btn.inactive:hover,
 .habitat-btn.inactive:hover,
 .color-btn.inactive:hover,
-.evolution-btn.inactive:hover {
+.evolution-btn.inactive:hover,
+.height-btn.inactive:hover {
   opacity: 0.6;
+}
+
+/* Weight button styles - reuse same look as height buttons */
+.weight-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.weight-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.weight-btn.active {
+  outline: 3px solid #333;
 }
 
 /* Type button styles are already defined */
@@ -417,6 +444,22 @@
   cursor: pointer;
   font-weight: 500;
   transition: opacity 0.2s;
+}
+
+/* Height button styles - match other filter buttons */
+.height-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.height-btn.active {
+  outline: 3px solid #333;
 }
 
 .color-btn.active {

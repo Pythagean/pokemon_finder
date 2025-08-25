@@ -18,7 +18,8 @@ export default function PokemonGrid({ pokemonList, greyed = {}, onCardClick }) {
             key={pokemon.id}
             id={pokemon.id}
             name={pokemon.name}
-            remoteSprite={pokemon.sprites?.other?.["official-artwork"]?.front_default}
+            remoteSmall={pokemon.sprites?.front_default}
+            remoteLarge={pokemon.sprites?.other?.["official-artwork"]?.front_default}
             greyedOut={!!greyed[pokemon.id]}
             onClick={() => onCardClick && onCardClick(pokemon.id)}
           />
