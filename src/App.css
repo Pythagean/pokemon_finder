@@ -72,7 +72,7 @@
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
   background-color: #f5f5f5;
-  padding: 20px 16px 20px 20px;
+  padding: 0px 16px 20px 20px;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
   height: 100vh;
   position: fixed;
@@ -116,7 +116,7 @@
   position: fixed;
   right: auto;
   left: calc(var(--sidebar-width) - 20px);
-  top: 20px;
+  top: 26px;
   width: 24px;
   height: 32px;
   background-color: #2196F3 !important;
@@ -200,7 +200,6 @@
 
 .control-section {
   background: white;
-  padding: 15px;
   border-radius: 8px;
   margin-bottom: 8px;
   text-align: center;
@@ -249,9 +248,9 @@
 
 .control-buttons {
   display: flex;
-  gap: 10px;
+  gap: 4px;
   justify-content: center;
-  margin: 20px 0 0 0;
+  padding-bottom: 10px;
 }
 
 .control-buttons button {
@@ -310,14 +309,14 @@
 .height-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
   margin: 10px 0;
 }
 
 /* Evolution stage button styles */
 .evolution-btn {
-  padding: 8px 16px;
+  padding: 4px 12px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -327,15 +326,18 @@
 }
 
 .evolution-1 {
-  background-color: #4CAF50;
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 .evolution-2 {
-  background-color: #2196F3;
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 .evolution-3 {
-  background-color: #9C27B0;
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 /* Type button styles */
@@ -353,8 +355,22 @@
   opacity: 0.5;
 }
 
+.type-btn.excluded {
+  opacity: 0.28;
+  filter: grayscale(80%);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.06);
+}
+
+/* Excluded state for habitat and color filters to visually match excluded types */
+.habitat-btn.excluded,
+.color-btn.excluded {
+  opacity: 0.28;
+  filter: grayscale(80%);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.06);
+}
+
 /* Type-specific colors */
-.type-normal { background-color: #A8A878; color: white; }
+.type-normal { background-color: #a6a68b; color: white; }
 .type-fire { background-color: #F08030; color: white; }
 .type-water { background-color: #6890F0; color: white; }
 .type-electric { background-color: #F8D030; color: black; }
@@ -415,7 +431,7 @@
 /* Type button styles are already defined */
 
 .habitat-btn {
-  padding: 8px 16px;
+  padding: 4px 12px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -431,14 +447,14 @@
 .habitat-forest { background-color: #2d5a27; color: white; }
 .habitat-grassland { background-color: #7db356; color: black; }
 .habitat-mountain { background-color: #96785d; color: white; }
-.habitat-rare { background-color: #daa520; color: black; }
+.habitat-rare { background-color: #ffba0a; color: black; }
 .habitat-rough-terrain { background-color: #8b4513; color: white; }
 .habitat-sea { background-color: #1e90ff; color: white; }
 .habitat-urban { background-color: #808080; color: white; }
 .habitat-waters-edge { background-color: #87ceeb; color: black; }
 
 .color-btn {
-  padding: 8px 16px;
+  padding: 4px 12px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -448,7 +464,7 @@
 
 /* Height button styles - match other filter buttons */
 .height-btn {
-  padding: 8px 16px;
+  padding: 4px 12px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -467,15 +483,16 @@
 }
 
 .color-black { background-color: #000000; color: white; }
-.color-blue { background-color: #1e90ff; color: white; }
-.color-brown { background-color: #8b4513; color: white; }
+.color-blue { background-color: #45a2ff; color: white; }
+.color-brown { background-color: #8c552d; color: white; }
 .color-gray { background-color: #808080; color: white; }
 .color-green { background-color: #2e8b57; color: white; }
-.color-pink { background-color: #ff69b4; color: black; }
-.color-purple { background-color: #800080; color: white; }
-.color-red { background-color: #ff0000; color: white; }
+.color-orange { background-color: #ff8c3f; color: white; }
+.color-pink { background-color: #ff8bc5; color: black; }
+.color-purple { background-color: #b031b0; color: white; }
+.color-red { background-color: #ff4444; color: white; }
 .color-white { background-color: #ffffff; color: black; border: 1px solid #ddd; }
-.color-yellow { background-color: #ffd700; color: black; }
+.color-yellow { background-color: #ffe241; color: black; }
 
 button:disabled {
   opacity: 0.5;
@@ -607,7 +624,7 @@ button:disabled {
   .sidebar-toggle {
     position: fixed !important;
     left: calc(var(--sidebar-width) - 20px) !important;
-    top: 10px !important;
+    top: 20px !important;
     background-color: #2196F3 !important;
     color: white !important;
     border-radius: 0 8px 8px 0 !important;

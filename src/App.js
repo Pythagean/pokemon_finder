@@ -15,8 +15,11 @@ function App() {
   // Sorting removed (UI disabled)
   // Track active type filters (up to 2)
   const [activeTypes, setActiveTypes] = useState([]);
+  const [excludedTypes, setExcludedTypes] = useState([]);
   const [activeHabitat, setActiveHabitat] = useState(null);
   const [activeColors, setActiveColors] = useState([]);
+  const [excludedHabitats, setExcludedHabitats] = useState([]);
+  const [excludedColors, setExcludedColors] = useState([]);
   const [activeEvolutionStage, setActiveEvolutionStage] = useState(null);
     const [activeHeightRange, setActiveHeightRange] = useState([]);
     const [activeWeightRange, setActiveWeightRange] = useState([]);
@@ -267,23 +270,55 @@ function App() {
     setActiveTypes([]);
     setActiveHabitat(null);
     setActiveColors([]);
-    setActiveEvolutionStage(null);
-    setActiveHeightRange([]);
+  setActiveEvolutionStage(null);
+  setActiveHeightRange([]);
+  setExcludedTypes([]);
+  setExcludedHabitats([]);
+  setExcludedColors([]);
+  setActiveWeightRange([]);
   };
 
   // Handler for habitat filter buttons
-  const handleHabitatFilter = (habitat) => {
+  const handleHabitatFilter = (habitat, e) => {
+    const isCtrl = e && (e.ctrlKey || e.metaKey);
+    if (isCtrl) {
+      // Toggle exclusion of habitat
+      const newExcluded = excludedHabitats.includes(habitat) ? excludedHabitats.filter(h => h !== habitat) : [...excludedHabitats, habitat];
+      // If we just excluded the currently active habitat, clear it
+      const newActiveHabitat = activeHabitat === habitat ? null : activeHabitat;
+      if (newActiveHabitat !== activeHabitat) setActiveHabitat(null);
+      setExcludedHabitats(newExcluded);
+      applyAllFilters(activeTypes, newActiveHabitat, activeColors, activeEvolutionStage, activeHeightRange, activeWeightRange, excludedTypes, newExcluded, excludedColors);
+      return;
+    }
+
+    // Normal toggle behavior (single-select)
     if (habitat === activeHabitat) {
       setActiveHabitat(null);
       applyAllFilters(activeTypes, null, activeColors); // Apply remaining filters
     } else {
       setActiveHabitat(habitat);
+      // Ensure it's not accidentally in excluded list
+      const newExcluded = excludedHabitats.filter(h => h !== habitat);
+      if (newExcluded.length !== excludedHabitats.length) setExcludedHabitats(newExcluded);
       applyAllFilters(activeTypes, habitat, activeColors); // Apply all filters with new habitat
     }
   };
 
   // Handler for color filter buttons
-  const handleColorFilter = (color) => {
+  const handleColorFilter = (color, e) => {
+    const isCtrl = e && (e.ctrlKey || e.metaKey);
+    if (isCtrl) {
+      // Toggle exclusion for color
+      const newExcluded = excludedColors.includes(color) ? excludedColors.filter(c => c !== color) : [...excludedColors, color];
+      // If excluded, ensure it's not in activeColors
+      const newActiveColors = activeColors.filter(c => c !== color);
+      setExcludedColors(newExcluded);
+      setActiveColors(newActiveColors);
+      applyAllFilters(activeTypes, activeHabitat, newActiveColors, activeEvolutionStage, activeHeightRange, activeWeightRange, excludedTypes, excludedHabitats, newExcluded);
+      return;
+    }
+
     let newColors;
     if (activeColors.includes(color)) {
       // Remove color if already selected
@@ -293,6 +328,9 @@ function App() {
       newColors = [...activeColors, color];
     }
     setActiveColors(newColors);
+    // Ensure it's not in excluded colors
+    const newExcluded = excludedColors.filter(c => c !== color);
+    if (newExcluded.length !== excludedColors.length) setExcludedColors(newExcluded);
     applyAllFilters(activeTypes, activeHabitat, newColors, activeEvolutionStage);
   };
 
@@ -336,17 +374,18 @@ function App() {
   };
 
   // Helper function to apply all active filters
-  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage, newHeightRange = activeHeightRange, newWeightRange = activeWeightRange) => {
+  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage, newHeightRange = activeHeightRange, newWeightRange = activeWeightRange, newExcludedTypes = excludedTypes, newExcludedHabitats = excludedHabitats, newExcludedColors = excludedColors) => {
     const newGreyed = {};
     pokemonList.forEach((pokemon) => {
       // Check type filters - pokemon must match all selected types
+      const pokemonTypeNames = (pokemon.types || []).map(t => t.type.name.toLowerCase());
       const passesTypeFilter = newTypes.length === 0 || newTypes.every(type =>
-        pokemon.types.some(t => t.type.name.toLowerCase() === type.toLowerCase())
+        pokemonTypeNames.includes(type.toLowerCase())
       );
 
       // Check habitat filter
       const passesHabitatFilter = !newHabitat || 
-        pokemon.habitat.toLowerCase() === newHabitat.toLowerCase();
+        (pokemon.habitat || '').toLowerCase() === newHabitat.toLowerCase();
 
       // Check color filter using custom color mapping - pokemon must match ALL selected colors
       const pokemonCustomColors = getPokemonColors(pokemon.name);
@@ -354,6 +393,12 @@ function App() {
         newColors.every(selectedColor => 
           pokemonCustomColors.some(color => color.toLowerCase() === selectedColor.toLowerCase())
         );
+
+      // Exclusion: if any excluded type/habitat/color is present on the pokemon, it fails
+      const passesExcludedTypes = !Array.isArray(newExcludedTypes) || newExcludedTypes.length === 0 || !newExcludedTypes.some(ex => pokemonTypeNames.includes(ex.toLowerCase()));
+      const passesExcludedHabitats = !Array.isArray(newExcludedHabitats) || newExcludedHabitats.length === 0 || !newExcludedHabitats.some(ex => (pokemon.habitat || '').toLowerCase() === ex.toLowerCase());
+      const pokemonCustomColorsLower = pokemonCustomColors.map(c => c.toLowerCase());
+      const passesExcludedColors = !Array.isArray(newExcludedColors) || newExcludedColors.length === 0 || !newExcludedColors.some(ex => pokemonCustomColorsLower.includes(ex.toLowerCase()));
 
       // Check evolution stage filter
       const passesEvolutionFilter = !newEvolutionStage || 
@@ -406,7 +451,7 @@ function App() {
         });
       }
 
-      if (!(passesTypeFilter && passesHabitatFilter && passesColorFilter && passesEvolutionFilter && passesHeightFilter && passesWeightFilter)) {
+  if (!(passesTypeFilter && passesExcludedTypes && passesExcludedHabitats && passesExcludedColors && passesHabitatFilter && passesColorFilter && passesEvolutionFilter && passesHeightFilter && passesWeightFilter)) {
         newGreyed[pokemon.id] = true;
       }
     });
@@ -414,22 +459,34 @@ function App() {
   };
 
   // Handler for type filter buttons
-  const handleTypeFilter = (type) => {
-    setActiveTypes(prevTypes => {
-      let newTypes;
-      if (prevTypes.includes(type)) {
-        // Remove the type if it's already selected
-        newTypes = prevTypes.filter(t => t !== type);
-      } else if (prevTypes.length < 2) {
-        // Add the type if we haven't reached the limit
-        newTypes = [...prevTypes, type];
-      } else {
-        // Replace the first type if we're at the limit
-        newTypes = [prevTypes[1], type];
-      }
-      applyAllFilters(newTypes);
-      return newTypes;
-    });
+  // Normal click: toggle inclusion (max 2). Ctrl/Cmd+click: toggle exclusion (show non-matching types).
+  const handleTypeFilter = (type, e) => {
+    const isCtrl = e && (e.ctrlKey || e.metaKey);
+    if (isCtrl) {
+      // Toggle exclusion
+      const newExcluded = excludedTypes.includes(type) ? excludedTypes.filter(t => t !== type) : [...excludedTypes, type];
+      // Also ensure it's not in activeTypes
+      const newActive = activeTypes.filter(t => t !== type);
+      setExcludedTypes(newExcluded);
+      setActiveTypes(newActive);
+      applyAllFilters(newActive, activeHabitat, activeColors, activeEvolutionStage, activeHeightRange, activeWeightRange, newExcluded);
+      return;
+    }
+
+    // Normal inclusion toggle
+    let newTypes;
+    if (activeTypes.includes(type)) {
+      newTypes = activeTypes.filter(t => t !== type);
+    } else if (activeTypes.length < 2) {
+      newTypes = [...activeTypes, type];
+    } else {
+      newTypes = [activeTypes[1], type];
+    }
+    // Remove from excluded if present
+    const newExcluded = excludedTypes.filter(t => t !== type);
+    setActiveTypes(newTypes);
+    setExcludedTypes(newExcluded);
+    applyAllFilters(newTypes, activeHabitat, activeColors, activeEvolutionStage, activeHeightRange, activeWeightRange, newExcluded);
   };
 
   return (
@@ -475,12 +532,13 @@ function App() {
             <div className="type-filters">
               {types.map(type => {
                 const isThisActive = activeTypes.includes(type);
-                const shouldBeInactive = activeTypes.length > 0 && !isThisActive;
+                const isThisExcluded = excludedTypes.includes(type);
+                const shouldBeInactive = activeTypes.length > 0 && !isThisActive && !isThisExcluded;
                 return (
-                  <button
+          <button
                     key={type}
-                    className={`type-btn type-${type.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''}`}
-                    onClick={() => handleTypeFilter(type)}
+                    className={`type-btn type-${type.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''} ${isThisExcluded ? 'excluded' : ''}`}
+                    onClick={(e) => handleTypeFilter(type, e)}
                     disabled={loading || error}
                   >
                     {type}
@@ -494,13 +552,14 @@ function App() {
             <h3>Filter by Habitat</h3>
             <div className="habitat-filters">
               {habitats.map(habitat => {
-                const isThisActive = activeHabitat === habitat;
-                const shouldBeInactive = activeHabitat && !isThisActive;
+        const isThisActive = activeHabitat === habitat;
+        const isThisExcluded = excludedHabitats.includes(habitat);
+        const shouldBeInactive = (activeHabitat && !isThisActive) || (excludedHabitats.length > 0 && !isThisExcluded);
                 return (
                   <button
                     key={habitat}
-                    className={`habitat-btn habitat-${habitat.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''}`}
-                    onClick={() => handleHabitatFilter(habitat)}
+          className={`habitat-btn habitat-${habitat.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''} ${isThisExcluded ? 'excluded' : ''}`}
+          onClick={(e) => handleHabitatFilter(habitat, e)}
                     disabled={loading || error}
                   >
                     {habitat}
@@ -514,12 +573,13 @@ function App() {
             <h3>Filter by Color</h3>
             <div className="color-filters">
               {colors.map(color => {
-                const isThisActive = activeColors.includes(color);
+        const isThisActive = activeColors.includes(color);
+        const isThisExcluded = excludedColors.includes(color);
                 return (
                   <button
                     key={color}
-                    className={`color-btn color-${color.toLowerCase()} ${isThisActive ? 'active' : ''}`}
-                    onClick={() => handleColorFilter(color)}
+          className={`color-btn color-${color.toLowerCase()} ${isThisActive ? 'active' : ''} ${isThisExcluded ? 'excluded' : ''}`}
+          onClick={(e) => handleColorFilter(color, e)}
                     disabled={loading || error}
                   >
                     {color}
