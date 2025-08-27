@@ -72,7 +72,7 @@
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
   background-color: #f5f5f5;
-  padding: 0px 16px 20px 20px;
+  padding: 0px 16px 20px 40px;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
   height: 100vh;
   position: fixed;
@@ -80,7 +80,7 @@
   top: 0;
   /* default z-index for sidebar when expanded; will overlay header when open */
   z-index: 1003;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s cubic-bezier(.2,.9,.2,1);
   overflow-y: auto;
 }
 
@@ -113,10 +113,10 @@
 }
 
 .sidebar-toggle {
-  position: fixed;
+  position: absolute;
   right: auto;
   left: calc(var(--sidebar-width) - 20px);
-  top: 26px;
+  top: 12px;
   width: 24px;
   height: 32px;
   background-color: #2196F3 !important;
@@ -134,6 +134,59 @@
   z-index: 1005;
   transition: all 0.3s ease-in-out;
   overflow: visible; /* allow the icon to show outside the button if needed */
+}
+
+/* Toggle sits inside the sidebar so it scrolls away when the sidebar content scrolls */
+.sidebar-toggle {
+  will-change: left, top;
+}
+
+/* Visibility states for animated toggle transitions */
+.sidebar-toggle {
+  transition: opacity 220ms cubic-bezier(.2,.9,.2,1), transform 220ms cubic-bezier(.2,.9,.2,1);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  pointer-events: none;
+}
+.sidebar-toggle.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.sidebar-toggle.hidden {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  pointer-events: none;
+}
+
+/* Collapsed state toggle: fixed top-left of the viewport */
+.sidebar-toggle.collapsed-toggle {
+  position: fixed !important;
+  left: 8px !important;
+  top: 24px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  z-index: 1010 !important;
+}
+
+/* Expanded state toggle: placed inside the sidebar header area */
+.sidebar-toggle.expanded-toggle {
+  position: absolute !important;
+  left: calc(var(--sidebar-width) - 4px) !important;
+  top: 24px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  z-index: 1006 !important;
+}
+
+@media (max-width: 480px) {
+  /* move the expanded toggle slightly lower and more inset on very small screens */
+  .sidebar-toggle.expanded-toggle {
+    left: calc(var(--sidebar-width) - 32px) !important;
+    top: 60px !important;
+  }
 }
 
 .sidebar-toggle:hover {
@@ -203,6 +256,10 @@
   border-radius: 8px;
   margin-bottom: 8px;
   text-align: center;
+  /* Keep the main action buttons visible when the sidebar content scrolls */
+  z-index: 1004; /* sit just below the sidebar itself */
+  /* ensure room so the expanded toggle doesn't visually overlap the control buttons */
+  padding-right: 52px;
 }
 
 .control-group {
@@ -602,7 +659,7 @@ button:disabled {
     min-width: var(--sidebar-width);
     transform: translateX(calc(-1 * (var(--sidebar-width) + var(--sidebar-hidden-extra))));
     z-index: 1000;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s cubic-bezier(.2,.9,.2,1);
     height: 100vh;
     height: 100dvh; /* Use dynamic viewport height on modern browsers */
     max-height: 100vh;
@@ -622,16 +679,17 @@ button:disabled {
   }
   
   .sidebar-toggle {
-    position: fixed !important;
+    position: absolute !important;
     left: calc(var(--sidebar-width) - 20px) !important;
-    top: 20px !important;
+    top: 12px !important;
     background-color: #2196F3 !important;
     color: white !important;
     border-radius: 0 8px 8px 0 !important;
-    z-index: 1001 !important;
+    z-index: 10050 !important;
     width: 32px !important;
     height: 40px !important;
     transform: none !important;
+    pointer-events: auto !important;
   }
   
   .pokemon-app.sidebar-collapsed .sidebar-toggle {
@@ -669,7 +727,7 @@ button:disabled {
   
   .control-buttons {
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
   }
   
   .type-filters,

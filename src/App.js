@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import PokemonGrid from './components/PokemonGrid';
 import { fetchAllPokemon } from './utils/api';
@@ -12,6 +12,10 @@ function App() {
   const [greyed, setGreyed] = useState({});
   // Track sidebar collapsed state
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(true);
+  // Control toggle visibility separately so we can animate them in sync with the sidebar
+  const [collapsedToggleVisible, setCollapsedToggleVisible] = useState(isSidebarCollapsed);
+  const [expandedToggleVisible, setExpandedToggleVisible] = useState(!isSidebarCollapsed);
+  const toggleTimeoutRef = useRef({ hide: null, show: null });
   // Sorting removed (UI disabled)
   // Track active type filters (up to 2)
   const [activeTypes, setActiveTypes] = useState([]);
@@ -238,6 +242,39 @@ function App() {
     }
     loadPokemon();
   }, []);
+
+  // Cleanup any pending timeouts on unmount
+  useEffect(() => {
+    const toClear = { ...toggleTimeoutRef.current };
+    return () => {
+      if (toClear.hide) clearTimeout(toClear.hide);
+      if (toClear.show) clearTimeout(toClear.show);
+    };
+  }, []);
+
+  const SIDEBAR_TRANSITION_MS = 300; // should match CSS
+
+  const expandSidebar = () => {
+    // Start opening sidebar immediately
+    setSidebarCollapsed(false);
+    // Hide collapsed toggle quickly so it begins to fade while sidebar opens
+    if (toggleTimeoutRef.current.hide) clearTimeout(toggleTimeoutRef.current.hide);
+    toggleTimeoutRef.current.hide = setTimeout(() => setCollapsedToggleVisible(false), 40);
+    // Show expanded toggle after sidebar finished its opening transition
+    if (toggleTimeoutRef.current.show) clearTimeout(toggleTimeoutRef.current.show);
+    toggleTimeoutRef.current.show = setTimeout(() => setExpandedToggleVisible(true), SIDEBAR_TRANSITION_MS);
+  };
+
+  const collapseSidebar = () => {
+    // Start collapsing sidebar immediately
+    setSidebarCollapsed(true);
+    // Hide expanded toggle quickly so it begins to fade while sidebar closes
+    if (toggleTimeoutRef.current.hide) clearTimeout(toggleTimeoutRef.current.hide);
+    toggleTimeoutRef.current.hide = setTimeout(() => setExpandedToggleVisible(false), 40);
+    // Show collapsed toggle after sidebar finished its closing transition
+    if (toggleTimeoutRef.current.show) clearTimeout(toggleTimeoutRef.current.show);
+    toggleTimeoutRef.current.show = setTimeout(() => setCollapsedToggleVisible(true), SIDEBAR_TRANSITION_MS);
+  };
 
   const retryLoad = () => {
     setError(null);
@@ -491,13 +528,13 @@ function App() {
 
   return (
     <div className={`pokemon-app ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-      <button 
-        className="sidebar-toggle"
-        onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
-        aria-label={isSidebarCollapsed ? "Show filters" : "Hide filters"}
-        title={isSidebarCollapsed ? "Show filters" : "Hide filters"}
+      {/* Collapsed and expanded toggles are both rendered so we can animate between them */}
+      <button
+        className={`sidebar-toggle collapsed-toggle ${collapsedToggleVisible ? 'visible' : 'hidden'}`}
+        onClick={expandSidebar}
+        aria-label="Show filters"
+        title="Show filters"
       >
-        {/* PNG icon (place filter.png in the project's public/ folder) */}
         <img
           src={process.env.PUBLIC_URL + '/filter.png'}
           alt="Filter"
@@ -511,10 +548,30 @@ function App() {
           }}
           onError={(e) => { e.target.style.display = 'none'; }}
         />
-        {/* CSS fallback icon */}
         <span className="filter-icon" aria-hidden="true"></span>
       </button>
       <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+        <button
+          className={`sidebar-toggle expanded-toggle ${expandedToggleVisible ? 'visible' : 'hidden'}`}
+          onClick={collapseSidebar}
+          aria-label="Hide filters"
+          title="Hide filters"
+        >
+          <img
+            src={process.env.PUBLIC_URL + '/filter.png'}
+            alt="Filter"
+            className="filter-icon-img"
+            onLoad={(e) => {
+              try {
+                const fallback = e.target.parentNode.querySelector('.filter-icon');
+                if (fallback) fallback.style.display = 'none';
+                e.target.style.display = 'inline-block';
+              } catch (err) {}
+            }}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+          <span className="filter-icon" aria-hidden="true"></span>
+        </button>
         <div className="control-section">
           <div className="control-buttons">
             <button className="disable-all-btn" onClick={handleDisableAll} disabled={loading || error}>
@@ -528,7 +585,7 @@ function App() {
 
         <div className="filter-section">
           <div className="filter-group">
-            <h3>Filter by Type</h3>
+            <h3>Type</h3>
             <div className="type-filters">
               {types.map(type => {
                 const isThisActive = activeTypes.includes(type);
@@ -549,7 +606,7 @@ function App() {
           </div>
           
           <div className="filter-group">
-            <h3>Filter by Habitat</h3>
+            <h3>Habitat</h3>
             <div className="habitat-filters">
               {habitats.map(habitat => {
         const isThisActive = activeHabitat === habitat;
@@ -570,7 +627,7 @@ function App() {
           </div>
 
           <div className="filter-group">
-            <h3>Filter by Color</h3>
+            <h3>Color</h3>
             <div className="color-filters">
               {colors.map(color => {
         const isThisActive = activeColors.includes(color);
@@ -590,7 +647,7 @@ function App() {
           </div>
 
           <div className="filter-group">
-            <h3>Filter by Evolution Stage</h3>
+            <h3>Evolution Stage</h3>
             <div className="evolution-filters">
               {evolutionStages.map(stage => {
                 const isThisActive = activeEvolutionStage === stage;
@@ -610,7 +667,7 @@ function App() {
           </div>
 
           <div className="filter-group">
-            <h3>Filter by Height</h3>
+            <h3>Height</h3>
             <div className="height-filters">
               {heightRanges.map(range => {
                 const isThisActive = Array.isArray(activeHeightRange) && activeHeightRange.includes(range.key);
@@ -630,7 +687,7 @@ function App() {
           </div>
 
           <div className="filter-group">
-            <h3>Filter by Weight</h3>
+            <h3>Weight</h3>
             <div className="weight-filters">
               {weightRanges.map(range => {
                 const isThisActive = Array.isArray(activeWeightRange) && activeWeightRange.includes(range.key);

@@ -1,7 +1,7 @@
 /* Enable All Button */
 .enable-all-btn {
   margin-top: 12px;
-  margin-left: 10px;
+  margin-left: 5px;
   padding: 8px 18px;
   font-size: 1rem;
   font-weight: 600;
@@ -22,6 +22,7 @@
 /* Disable All Button */
 .disable-all-btn {
   margin-top: 12px;
+  margin-left: 5px;
   padding: 8px 18px;
   font-size: 1rem;
   font-weight: 600;
