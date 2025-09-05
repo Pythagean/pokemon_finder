@@ -320,12 +320,26 @@ function App() {
     const isCtrl = e && (e.ctrlKey || e.metaKey);
     if (isCtrl) {
       // Toggle exclusion of habitat
-      const newExcluded = excludedHabitats.includes(habitat) ? excludedHabitats.filter(h => h !== habitat) : [...excludedHabitats, habitat];
+      const isExcluding = !excludedHabitats.includes(habitat);
+      const newExcluded = isExcluding
+        ? [...excludedHabitats, habitat]
+        : excludedHabitats.filter(h => h !== habitat);
       // If we just excluded the currently active habitat, clear it
-      const newActiveHabitat = activeHabitat === habitat ? null : activeHabitat;
-      if (newActiveHabitat !== activeHabitat) setActiveHabitat(null);
+      const shouldClearActive = isExcluding && activeHabitat === habitat;
+      if (shouldClearActive) setActiveHabitat(null);
       setExcludedHabitats(newExcluded);
-      applyAllFilters(activeTypes, newActiveHabitat, activeColors, activeEvolutionStage, activeHeightRange, activeWeightRange, excludedTypes, newExcluded, excludedColors);
+      // Always use the new exclusion list and correct active habitat in applyAllFilters
+      applyAllFilters(
+        activeTypes,
+        shouldClearActive ? null : activeHabitat,
+        activeColors,
+        activeEvolutionStage,
+        activeHeightRange,
+        activeWeightRange,
+        excludedTypes,
+        newExcluded,
+        excludedColors
+      );
       return;
     }
 
@@ -611,18 +625,18 @@ function App() {
               {habitats.map(habitat => {
         const isThisActive = activeHabitat === habitat;
         const isThisExcluded = excludedHabitats.includes(habitat);
-        const shouldBeInactive = (activeHabitat && !isThisActive) || (excludedHabitats.length > 0 && !isThisExcluded);
-                return (
-                  <button
-                    key={habitat}
-          className={`habitat-btn habitat-${habitat.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''} ${isThisExcluded ? 'excluded' : ''}`}
-          onClick={(e) => handleHabitatFilter(habitat, e)}
-                    disabled={loading || error}
-                  >
-                    {habitat}
-                  </button>
-                );
-              })}
+        const shouldBeInactive = !!activeHabitat && !isThisActive && !isThisExcluded;
+        return (
+          <button
+            key={habitat}
+            className={`habitat-btn habitat-${habitat.toLowerCase()} ${isThisActive ? 'active' : ''} ${shouldBeInactive ? 'inactive' : ''} ${isThisExcluded ? 'excluded' : ''}`}
+            onClick={(e) => handleHabitatFilter(habitat, e)}
+            disabled={loading || error}
+          >
+            {habitat}
+          </button>
+        );
+      })}
             </div>
           </div>
 

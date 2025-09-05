@@ -1,5 +1,6 @@
 // components/PokemonCard.js
 import React from 'react';
+import thumbs from '../assets/thumbs';
 
 
 /**
@@ -10,22 +11,25 @@ import React from 'react';
  * @param {boolean} [props.greyedOut] - If true, show greyed out (for future filters)
  */
 
-export default function PokemonCard({ id, name, remoteSmall, remoteLarge, greyedOut = false, onClick }) {
-  // Try small local thumbnail first, then full local, then remote small, then remote large
-  const localThumb = process.env.PUBLIC_URL + `/pokemon/thumbs/${id}.png`;
-  const localFull = process.env.PUBLIC_URL + `/pokemon/${id}.png`;
 
-  // Prefer thumb if present, otherwise prefer the smaller remote sprite before falling back
-  // to the large local full artwork to speed up initial loads when thumbnails aren't generated.
-  const srcCandidates = [localThumb, remoteSmall, localFull, remoteLarge];
+export default function PokemonCard({ id, name, remoteSmall, remoteLarge, greyedOut = false, onClick }) {
+  // Use imported thumbs bundle, fallback to remoteSmall, then remoteLarge
+  const localThumb = thumbs[id];
+  const srcCandidates = [localThumb, remoteSmall, remoteLarge];
 
   function handleError(e) {
     if (!e || !e.target) return;
     const current = e.target.src;
     // Find next candidate that's different from current
-    const idx = srcCandidates.indexOf(current);
+    const idx = srcCandidates.findIndex(src => src === current || (typeof src === 'object' && src?.default === current));
     const next = idx >= 0 && idx < srcCandidates.length - 1 ? srcCandidates[idx + 1] : null;
-    if (next && next !== current) e.target.src = next;
+    if (next && next !== current) {
+      if (typeof next === 'object' && next?.default) {
+        e.target.src = next.default;
+      } else {
+        e.target.src = next;
+      }
+    }
   }
 
   return (
@@ -38,7 +42,7 @@ export default function PokemonCard({ id, name, remoteSmall, remoteLarge, greyed
       aria-pressed={greyedOut}
     >
       <img
-        src={localThumb}
+        src={typeof localThumb === 'object' && localThumb?.default ? localThumb.default : localThumb}
         alt={name}
         className="pokemon-card-img"
         loading="lazy"
