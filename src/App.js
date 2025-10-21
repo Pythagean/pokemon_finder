@@ -425,120 +425,156 @@ function App() {
   };
 
   // Helper function to apply all active filters
-  const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage, newHeightRange = activeHeightRange, newWeightRange = activeWeightRange, newExcludedTypes = excludedTypes, newExcludedHabitats = excludedHabitats, newExcludedColors = excludedColors) => {
-    const newGreyed = {};
-    pokemonList.forEach((pokemon) => {
-      // Check type filters - support "None" for single-type Pokémon
-      const pokemonTypeNames = (pokemon.types || []).map(t => t.type.name.toLowerCase());
+  const applyAllFilters = (
+  newTypes = activeTypes,
+  newHabitat = activeHabitat,
+  newColors = activeColors,
+  newEvolutionStage = activeEvolutionStage,
+  newHeightRange = activeHeightRange,
+  newWeightRange = activeWeightRange,
+  newExcludedTypes = excludedTypes,
+  newExcludedHabitats = excludedHabitats,
+  newExcludedColors = excludedColors
+) => {
+  const newGreyed = {};
+  console.log('applyAllFilters called with:', {
+    newTypes,
+    newExcludedTypes,
+    newHabitat,
+    newColors,
+    newEvolutionStage,
+    newHeightRange,
+    newWeightRange
+  });
 
-      let passesTypeFilter = true;
-      if (newTypes.length > 0) {
-        const includesNone = newTypes.includes('None');
-        const otherTypes = newTypes.filter(t => t !== 'None');
+  pokemonList.forEach((pokemon) => {
+    const pokemonTypeNames = (pokemon.types || []).map(t => t.type.name.toLowerCase());
+    const pokemonCustomColors = getPokemonColors(pokemon.name);
+    const pokemonCustomColorsLower = pokemonCustomColors.map(c => c.toLowerCase());
 
-        // Must match all non-"None" selected types
-        passesTypeFilter = otherTypes.every(type =>
-          pokemonTypeNames.includes(type.toLowerCase())
-        );
+    // --- TYPE FILTERS ---
+    let passesTypeFilter = true;
 
-        // If "None" is selected, Pokémon must have exactly one type
-        if (includesNone) {
-          passesTypeFilter = passesTypeFilter && pokemonTypeNames.length === 1;
+    // Active types
+    if (newTypes.length > 0) {
+      const includesNone = newTypes.includes('None');
+      const otherTypes = newTypes.filter(t => t !== 'None');
+
+      // Pokémon must include all active non-"None" types
+      passesTypeFilter = otherTypes.every(type =>
+        pokemonTypeNames.includes(type.toLowerCase())
+      );
+
+      // If "None" is active → only single-type Pokémon
+      if (includesNone) {
+        passesTypeFilter = passesTypeFilter && pokemonTypeNames.length === 1;
+      }
+    }
+
+    // Excluded types
+    if (newExcludedTypes.length > 0) {
+      const excludesNone = newExcludedTypes.includes('None');
+      const otherExcluded = newExcludedTypes.filter(t => t !== 'None');
+
+      // Exclude Pokémon that contain any excluded type
+      if (otherExcluded.length > 0) {
+        if (otherExcluded.some(type => pokemonTypeNames.includes(type.toLowerCase()))) {
+          passesTypeFilter = false;
         }
       }
 
-      // Check habitat filter
-      const passesHabitatFilter = !newHabitat || 
-        (pokemon.habitat || '').toLowerCase() === newHabitat.toLowerCase();
-
-      // Check color filter using custom color mapping - pokemon must match ALL selected colors
-      const pokemonCustomColors = getPokemonColors(pokemon.name);
-      const passesColorFilter = newColors.length === 0 || 
-        newColors.every(selectedColor => 
-          pokemonCustomColors.some(color => color.toLowerCase() === selectedColor.toLowerCase())
-        );
-
-      // Exclusion: if any excluded type/habitat/color is present on the pokemon, it fails
-      const passesExcludedTypes = !Array.isArray(newExcludedTypes) || newExcludedTypes.length === 0 || !newExcludedTypes.some(ex => pokemonTypeNames.includes(ex.toLowerCase()));
-      const passesExcludedHabitats = !Array.isArray(newExcludedHabitats) || newExcludedHabitats.length === 0 || !newExcludedHabitats.some(ex => (pokemon.habitat || '').toLowerCase() === ex.toLowerCase());
-      const pokemonCustomColorsLower = pokemonCustomColors.map(c => c.toLowerCase());
-      const passesExcludedColors = !Array.isArray(newExcludedColors) || newExcludedColors.length === 0 || !newExcludedColors.some(ex => pokemonCustomColorsLower.includes(ex.toLowerCase()));
-
-      // Check evolution stage filter
-      const passesEvolutionFilter = !newEvolutionStage || 
-        pokemon.evolutionStage === newEvolutionStage;
-
-      // Check height filter. PokéAPI height is in decimeters (dm).
-      let passesHeightFilter = true;
-      // newHeightRange is an array of selected range keys (multi-select). If empty -> passes.
-      if (Array.isArray(newHeightRange) && newHeightRange.length > 0) {
-        const h = Number(pokemon.height || 0); // in dm
-        // If any selected range matches, the pokemon passes the height filter
-        passesHeightFilter = newHeightRange.some(rangeKey => {
-          switch (rangeKey) {
-            case 'under50cm':
-              return h <= 5; // < 50 cm
-            case '50-100cm':
-              return h >= 5 && h <= 10; // 50cm - 1m
-            case '1-1_5m':
-              return h >= 10 && h <= 15; // 1.0m - 1.5m
-            case '1_5-2m':
-              return h >= 15 && h <= 20; // 1.5m - 2.0m
-            case 'over2m':
-              return h >= 20; // >= 2m
-            default:
-              return false;
-          }
-        });
+      // Exclude single-type Pokémon if "None" is excluded
+      if (excludesNone && pokemonTypeNames.length === 1) {
+        passesTypeFilter = false;
       }
+    }
 
-      // Grey out if it doesn't pass ALL active filters
-      // Check weight filter. PokéAPI weight is in hectograms (hg): 1 kg = 10 units
-      let passesWeightFilter = true;
-      if (Array.isArray(newWeightRange) && newWeightRange.length > 0) {
-        const w = Number(pokemon.weight || 0); // in hg
-        passesWeightFilter = newWeightRange.some(rangeKey => {
-          switch (rangeKey) {
-            case '0-25kg':
-              return w >= 0 && w <= 250; // 0 - 25 kg -> 0 - 250 hg
-            case '25-50kg':
-              return w >= 250 && w <= 500;
-            case '50-75kg':
-              return w >= 500 && w <= 750;
-            case '75-100kg':
-              return w >= 750 && w <= 1000;
-            case 'over100kg':
-              return w >= 1000; // >= 100 kg
-            default:
-              return false;
-          }
-        });
-      }
+    // --- HABITAT FILTER ---
+    const passesHabitatFilter = !newHabitat ||
+      (pokemon.habitat || '').toLowerCase() === newHabitat.toLowerCase();
 
-  if (!(passesTypeFilter && passesExcludedTypes && passesExcludedHabitats && passesExcludedColors && passesHabitatFilter && passesColorFilter && passesEvolutionFilter && passesHeightFilter && passesWeightFilter)) {
-        newGreyed[pokemon.id] = true;
-      }
-    });
-    setGreyed(newGreyed);
-  };
+    // --- COLOR FILTER ---
+    const passesColorFilter = newColors.length === 0 ||
+      newColors.every(selectedColor =>
+        pokemonCustomColorsLower.includes(selectedColor.toLowerCase())
+      );
+
+    // --- EXCLUDED FILTERS ---
+    const passesExcludedHabitats = !Array.isArray(newExcludedHabitats) || newExcludedHabitats.length === 0 || !newExcludedHabitats.some(ex => (pokemon.habitat || '').toLowerCase() === ex.toLowerCase());
+    const passesExcludedColors = !Array.isArray(newExcludedColors) || newExcludedColors.length === 0 || !newExcludedColors.some(ex => pokemonCustomColorsLower.includes(ex.toLowerCase()));
+
+    // --- EVOLUTION STAGE FILTER ---
+    const passesEvolutionFilter = !newEvolutionStage ||
+      pokemon.evolutionStage === newEvolutionStage;
+
+    // --- HEIGHT FILTER ---
+    let passesHeightFilter = true;
+    if (Array.isArray(newHeightRange) && newHeightRange.length > 0) {
+      const h = Number(pokemon.height || 0);
+      passesHeightFilter = newHeightRange.some(rangeKey => {
+        switch (rangeKey) {
+          case 'under50cm': return h <= 5;
+          case '50-100cm': return h >= 5 && h <= 10;
+          case '1-1_5m': return h >= 10 && h <= 15;
+          case '1_5-2m': return h >= 15 && h <= 20;
+          case 'over2m': return h >= 20;
+          default: return false;
+        }
+      });
+    }
+
+    // --- WEIGHT FILTER ---
+    let passesWeightFilter = true;
+    if (Array.isArray(newWeightRange) && newWeightRange.length > 0) {
+      const w = Number(pokemon.weight || 0);
+      passesWeightFilter = newWeightRange.some(rangeKey => {
+        switch (rangeKey) {
+          case '0-25kg': return w >= 0 && w <= 250;
+          case '25-50kg': return w >= 250 && w <= 500;
+          case '50-75kg': return w >= 500 && w <= 750;
+          case '75-100kg': return w >= 750 && w <= 1000;
+          case 'over100kg': return w >= 1000;
+          default: return false;
+        }
+      });
+    }
+
+    // --- FINAL GREY OUT ---
+    if (!(passesTypeFilter && passesHabitatFilter && passesColorFilter &&
+          passesExcludedHabitats && passesExcludedColors &&
+          passesEvolutionFilter && passesHeightFilter && passesWeightFilter)) {
+      newGreyed[pokemon.id] = true;
+    }
+  });
+
+  setGreyed(newGreyed);
+};
+
 
   // Handler for type filter buttons
   // Normal click: toggle inclusion (max 2). Ctrl/Cmd+click: toggle exclusion (show non-matching types).
-  const handleTypeFilter = (type, e) => {
+  // Handler for type filter buttons
+// Normal click: toggle inclusion (max 2). Ctrl/Cmd+click: toggle exclusion (show non-matching types).
+const handleTypeFilter = (type, e) => {
   const isCtrl = e && (e.ctrlKey || e.metaKey);
 
+  console.log('handleTypeFilter called:', { type, isCtrl, activeTypes, excludedTypes });
+
   if (isCtrl) {
-    // Toggle exclusion
+    // --- Ctrl-click toggles exclusion ---
     const newExcluded = excludedTypes.includes(type)
       ? excludedTypes.filter(t => t !== type)
       : [...excludedTypes, type];
 
-    // Ensure excluded types aren't in activeTypes
+    // Ensure excluded types aren't active
     const newActive = activeTypes.filter(t => t !== type);
+
+    console.log('  ctrl branch -> newActive, newExcluded:', { newActive, newExcluded });
 
     setExcludedTypes(newExcluded);
     setActiveTypes(newActive);
 
+    // Apply using the new arrays
     applyAllFilters(
       newActive,
       activeHabitat,
@@ -551,17 +587,18 @@ function App() {
     return;
   }
 
-  // --- Normal click (activate or toggle in activeTypes) ---
+  // --- Normal click toggles active ---
   let newActive;
   if (activeTypes.includes(type)) {
-    // Deselect if clicked again
     newActive = activeTypes.filter(t => t !== type);
   } else {
     newActive = [...activeTypes, type];
   }
 
-  // Ensure not in excludedTypes
+  // Ensure not excluded
   const newExcluded = excludedTypes.filter(t => t !== type);
+
+  console.log('  normal click -> newActive, newExcluded:', { newActive, newExcluded });
 
   setActiveTypes(newActive);
   setExcludedTypes(newExcluded);
