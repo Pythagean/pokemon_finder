@@ -464,13 +464,13 @@ function App() {
         passesHeightFilter = newHeightRange.some(rangeKey => {
           switch (rangeKey) {
             case 'under50cm':
-              return h < 5; // < 50 cm
+              return h <= 5; // < 50 cm
             case '50-100cm':
-              return h >= 5 && h < 10; // 50cm - 1m
+              return h >= 5 && h <= 10; // 50cm - 1m
             case '1-1_5m':
-              return h >= 10 && h < 15; // 1.0m - 1.5m
+              return h >= 10 && h <= 15; // 1.0m - 1.5m
             case '1_5-2m':
-              return h >= 15 && h < 20; // 1.5m - 2.0m
+              return h >= 15 && h <= 20; // 1.5m - 2.0m
             case 'over2m':
               return h >= 20; // >= 2m
             default:
@@ -487,13 +487,13 @@ function App() {
         passesWeightFilter = newWeightRange.some(rangeKey => {
           switch (rangeKey) {
             case '0-25kg':
-              return w >= 0 && w < 250; // 0 - 25 kg -> 0 - 250 hg
+              return w >= 0 && w <= 250; // 0 - 25 kg -> 0 - 250 hg
             case '25-50kg':
-              return w >= 250 && w < 500;
+              return w >= 250 && w <= 500;
             case '50-75kg':
-              return w >= 500 && w < 750;
+              return w >= 500 && w <= 750;
             case '75-100kg':
-              return w >= 750 && w < 1000;
+              return w >= 750 && w <= 1000;
             case 'over100kg':
               return w >= 1000; // >= 100 kg
             default:
