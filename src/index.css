@@ -101,6 +101,7 @@
 .type-rock { background: #B8A038; color: white; }
 .type-ghost { background: #705898; color: white; }
 .type-dragon { background: #7038F8; color: white; }
+.type-none { background: #7b7a7d; color: white; }
 
 /* Scale Toggle Button */
 .scale-toggle-btn {

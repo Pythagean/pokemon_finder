@@ -32,7 +32,7 @@ function App() {
   const types = [
     'Normal', 'Fire', 'Water', 'Electric', 'Grass', 
     'Ice', 'Fighting', 'Poison', 'Ground', 'Flying', 
-    'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon'
+    'Psychic', 'Bug', 'Rock', 'Ghost', 'Dragon', 'None'
   ];
 
   const habitats = [
@@ -428,11 +428,24 @@ function App() {
   const applyAllFilters = (newTypes = activeTypes, newHabitat = activeHabitat, newColors = activeColors, newEvolutionStage = activeEvolutionStage, newHeightRange = activeHeightRange, newWeightRange = activeWeightRange, newExcludedTypes = excludedTypes, newExcludedHabitats = excludedHabitats, newExcludedColors = excludedColors) => {
     const newGreyed = {};
     pokemonList.forEach((pokemon) => {
-      // Check type filters - pokemon must match all selected types
+      // Check type filters - support "None" for single-type Pokémon
       const pokemonTypeNames = (pokemon.types || []).map(t => t.type.name.toLowerCase());
-      const passesTypeFilter = newTypes.length === 0 || newTypes.every(type =>
-        pokemonTypeNames.includes(type.toLowerCase())
-      );
+
+      let passesTypeFilter = true;
+      if (newTypes.length > 0) {
+        const includesNone = newTypes.includes('None');
+        const otherTypes = newTypes.filter(t => t !== 'None');
+
+        // Must match all non-"None" selected types
+        passesTypeFilter = otherTypes.every(type =>
+          pokemonTypeNames.includes(type.toLowerCase())
+        );
+
+        // If "None" is selected, Pokémon must have exactly one type
+        if (includesNone) {
+          passesTypeFilter = passesTypeFilter && pokemonTypeNames.length === 1;
+        }
+      }
 
       // Check habitat filter
       const passesHabitatFilter = !newHabitat || 
@@ -512,33 +525,58 @@ function App() {
   // Handler for type filter buttons
   // Normal click: toggle inclusion (max 2). Ctrl/Cmd+click: toggle exclusion (show non-matching types).
   const handleTypeFilter = (type, e) => {
-    const isCtrl = e && (e.ctrlKey || e.metaKey);
-    if (isCtrl) {
-      // Toggle exclusion
-      const newExcluded = excludedTypes.includes(type) ? excludedTypes.filter(t => t !== type) : [...excludedTypes, type];
-      // Also ensure it's not in activeTypes
-      const newActive = activeTypes.filter(t => t !== type);
-      setExcludedTypes(newExcluded);
-      setActiveTypes(newActive);
-      applyAllFilters(newActive, activeHabitat, activeColors, activeEvolutionStage, activeHeightRange, activeWeightRange, newExcluded);
-      return;
-    }
+  const isCtrl = e && (e.ctrlKey || e.metaKey);
 
-    // Normal inclusion toggle
-    let newTypes;
-    if (activeTypes.includes(type)) {
-      newTypes = activeTypes.filter(t => t !== type);
-    } else if (activeTypes.length < 2) {
-      newTypes = [...activeTypes, type];
-    } else {
-      newTypes = [activeTypes[1], type];
-    }
-    // Remove from excluded if present
-    const newExcluded = excludedTypes.filter(t => t !== type);
-    setActiveTypes(newTypes);
+  if (isCtrl) {
+    // Toggle exclusion
+    const newExcluded = excludedTypes.includes(type)
+      ? excludedTypes.filter(t => t !== type)
+      : [...excludedTypes, type];
+
+    // Ensure excluded types aren't in activeTypes
+    const newActive = activeTypes.filter(t => t !== type);
+
     setExcludedTypes(newExcluded);
-    applyAllFilters(newTypes, activeHabitat, activeColors, activeEvolutionStage, activeHeightRange, activeWeightRange, newExcluded);
-  };
+    setActiveTypes(newActive);
+
+    applyAllFilters(
+      newActive,
+      activeHabitat,
+      activeColors,
+      activeEvolutionStage,
+      activeHeightRange,
+      activeWeightRange,
+      newExcluded
+    );
+    return;
+  }
+
+  // --- Normal click (activate or toggle in activeTypes) ---
+  let newActive;
+  if (activeTypes.includes(type)) {
+    // Deselect if clicked again
+    newActive = activeTypes.filter(t => t !== type);
+  } else {
+    newActive = [...activeTypes, type];
+  }
+
+  // Ensure not in excludedTypes
+  const newExcluded = excludedTypes.filter(t => t !== type);
+
+  setActiveTypes(newActive);
+  setExcludedTypes(newExcluded);
+
+  applyAllFilters(
+    newActive,
+    activeHabitat,
+    activeColors,
+    activeEvolutionStage,
+    activeHeightRange,
+    activeWeightRange,
+    newExcluded
+  );
+};
+
 
   return (
     <div className={`pokemon-app ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>

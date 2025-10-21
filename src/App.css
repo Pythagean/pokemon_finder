@@ -442,6 +442,7 @@
 .type-rock { background-color: #B8A038; color: white; }
 .type-ghost { background-color: #705898; color: white; }
 .type-dragon { background-color: #7038F8; color: white; }
+.type-none { background-color: #7b7a7d; color: white; }
 
 /* Inactive state for all filter buttons */
 .type-btn.inactive,
