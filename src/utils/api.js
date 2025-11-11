@@ -102,27 +102,28 @@ export async function fetchPokemonBatch(ids) {
  * @returns {Promise<Object[]>} Array of Pokémon data
  */
 export async function fetchAllPokemon() {
-  // First try to read a pre-downloaded local JSON from public/pokemon-data.json
   try {
     const localRes = await fetch(process.env.PUBLIC_URL + '/pokemon-data.json');
     if (localRes.ok) {
       const localData = await localRes.json();
-      // localData is an array of { pokemon, species, evolution } items from the downloader.
       return localData.map((entry, idx) => {
-        const pokemonData = entry.pokemon;
-        const speciesData = entry.species;
-        // compute evolutionStage roughly based on species/evolution chain info
-        let evolutionStage = 1;
+
+        // Compute evolutionStage roughly based on species/evolution chain info
+        let evolutionStage = entry.evoStage || 1;
         try {
           const evoChain = entry.evolution?.chain;
           let evoCheck = evoChain;
-          const speciesName = speciesData.name;
+          const speciesName = entry.name;
           while (evoCheck && evoCheck.evolves_to && evoCheck.evolves_to.length > 0) {
             const nextEvo = evoCheck.evolves_to[0];
             if (speciesName === nextEvo.species.name) {
               evolutionStage = 2;
               break;
-            } else if (nextEvo.evolves_to && nextEvo.evolves_to.length > 0 && speciesName === nextEvo.evolves_to[0].species.name) {
+            } else if (
+              nextEvo.evolves_to &&
+              nextEvo.evolves_to.length > 0 &&
+              speciesName === nextEvo.evolves_to[0].species.name
+            ) {
               evolutionStage = 3;
               break;
             }
@@ -131,17 +132,27 @@ export async function fetchAllPokemon() {
         } catch (e) {
           evolutionStage = 1;
         }
+
+        // Filter out steel and fairy types
+        const filteredTypes = entry.types
+          ?.filter(t => t !== 'steel' && t !== 'fairy')
+          ?.map(t => t);
+
         return {
-          ...pokemonData,
-          habitat: speciesData.habitat?.name || 'unknown',
-          color: speciesData.color?.name || 'unknown',
+          ...entry,
+          types: filteredTypes,
+          habitat: entry.habitat || 'unknown',
+          color: entry.color?.name || 'unknown',
           evolutionStage,
         };
       });
     }
   } catch (err) {
+    console.log("ERR");
     // ignore and fall back to network
   }
+
+
 
   const ids = Array.from({ length: 151 }, (_, i) => i + 1);
   // Batch in groups of 20 for efficiency

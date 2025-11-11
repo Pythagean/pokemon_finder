@@ -11,6 +11,7 @@
         "weight": 69,
         "habitat": "grassland",
         "color": "green",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "bulbasaur",
@@ -38,6 +39,7 @@
         "weight": 130,
         "habitat": "grassland",
         "color": "green",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "bulbasaur",
@@ -65,6 +67,7 @@
         "weight": 1000,
         "habitat": "grassland",
         "color": "green",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "bulbasaur",
@@ -92,6 +95,7 @@
         "weight": 85,
         "habitat": "mountain",
         "color": "red",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "charmander",
@@ -118,6 +122,7 @@
         "weight": 190,
         "habitat": "mountain",
         "color": "red",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "charmander",
@@ -145,6 +150,7 @@
         "weight": 905,
         "habitat": "mountain",
         "color": "red",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "charmander",
@@ -171,6 +177,7 @@
         "weight": 90,
         "habitat": "waters-edge",
         "color": "blue",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "squirtle",
@@ -197,6 +204,7 @@
         "weight": 225,
         "habitat": "waters-edge",
         "color": "blue",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "squirtle",
@@ -223,6 +231,7 @@
         "weight": 855,
         "habitat": "waters-edge",
         "color": "blue",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "squirtle",
@@ -249,6 +258,7 @@
         "weight": 29,
         "habitat": "forest",
         "color": "green",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "caterpie",
@@ -275,6 +285,7 @@
         "weight": 99,
         "habitat": "forest",
         "color": "green",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "caterpie",
@@ -302,6 +313,7 @@
         "weight": 320,
         "habitat": "forest",
         "color": "white",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "caterpie",
@@ -329,6 +341,7 @@
         "weight": 32,
         "habitat": "forest",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "weedle",
@@ -356,6 +369,7 @@
         "weight": 100,
         "habitat": "forest",
         "color": "yellow",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "weedle",
@@ -383,6 +397,7 @@
         "weight": 295,
         "habitat": "forest",
         "color": "yellow",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "weedle",
@@ -410,6 +425,7 @@
         "weight": 18,
         "habitat": "forest",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "pidgey",
@@ -437,6 +453,7 @@
         "weight": 300,
         "habitat": "forest",
         "color": "brown",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "pidgey",
@@ -464,6 +481,7 @@
         "weight": 395,
         "habitat": "forest",
         "color": "brown",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "pidgey",
@@ -490,6 +508,7 @@
         "weight": 35,
         "habitat": "grassland",
         "color": "purple",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "rattata",
@@ -512,6 +531,7 @@
         "weight": 185,
         "habitat": "grassland",
         "color": "brown",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "rattata",
@@ -535,6 +555,7 @@
         "weight": 20,
         "habitat": "rough-terrain",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "spearow",
@@ -554,6 +575,7 @@
             "normal",
             "flying"
         ],
+        "evoStage": 2,
         "height": 12,
         "weight": 380,
         "habitat": "rough-terrain",
@@ -580,6 +602,7 @@
         "weight": 69,
         "habitat": "grassland",
         "color": "purple",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "ekans",
@@ -602,6 +625,7 @@
         "weight": 650,
         "habitat": "grassland",
         "color": "purple",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "ekans",
@@ -624,6 +648,7 @@
         "weight": 60,
         "habitat": "forest",
         "color": "yellow",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "pichu",
@@ -648,6 +673,7 @@
         ],
         "height": 8,
         "weight": 300,
+        "evoStage": 2,
         "habitat": "forest",
         "color": "yellow",
         "evolution": [
@@ -676,6 +702,7 @@
         "weight": 120,
         "habitat": "rough-terrain",
         "color": "yellow",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "sandshrew",
@@ -695,6 +722,7 @@
             "ground"
         ],
         "height": 10,
+        "evoStage": 2,
         "weight": 295,
         "habitat": "rough-terrain",
         "color": "yellow",
@@ -720,6 +748,7 @@
         "weight": 70,
         "habitat": "grassland",
         "color": "blue",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "nidoran-f",
@@ -744,6 +773,7 @@
         ],
         "height": 8,
         "weight": 200,
+        "evoStage": 2,
         "habitat": "grassland",
         "color": "blue",
         "evolution": [
@@ -771,6 +801,7 @@
         ],
         "height": 13,
         "weight": 600,
+        "evoStage": 3,
         "habitat": "grassland",
         "color": "blue",
         "evolution": [
@@ -799,6 +830,7 @@
         "weight": 90,
         "habitat": "grassland",
         "color": "purple",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "nidoran-m",
@@ -823,6 +855,7 @@
         ],
         "height": 9,
         "weight": 195,
+        "evoStage": 2,
         "habitat": "grassland",
         "color": "purple",
         "evolution": [
@@ -850,6 +883,7 @@
         ],
         "height": 14,
         "weight": 620,
+        "evoStage": 3,
         "habitat": "grassland",
         "color": "purple",
         "evolution": [
@@ -872,12 +906,13 @@
         "name": "clefairy",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/35.png",
         "types": [
-            "fairy"
+            "normal"
         ],
         "height": 6,
         "weight": 75,
         "habitat": "mountain",
         "color": "pink",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "cleffa",
@@ -898,9 +933,10 @@
         "name": "clefable",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/36.png",
         "types": [
-            "fairy"
+            "normal"
         ],
         "height": 13,
+        "evoStage": 2,
         "weight": 400,
         "habitat": "mountain",
         "color": "pink",
@@ -929,6 +965,7 @@
         "height": 6,
         "weight": 99,
         "habitat": "grassland",
+        "evoStage": 1,
         "color": "brown",
         "evolution": [
             {
@@ -950,6 +987,7 @@
         ],
         "height": 11,
         "weight": 199,
+        "evoStage": 2,
         "habitat": "grassland",
         "color": "yellow",
         "evolution": [
@@ -968,10 +1006,10 @@
         "name": "jigglypuff",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/39.png",
         "types": [
-            "normal",
-            "fairy"
+            "normal"
         ],
         "height": 5,
+        "evoStage": 1,
         "weight": 55,
         "habitat": "grassland",
         "color": "pink",
@@ -995,12 +1033,12 @@
         "name": "wigglytuff",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/40.png",
         "types": [
-            "normal",
-            "fairy"
+            "normal"
         ],
         "height": 10,
         "weight": 120,
         "habitat": "grassland",
+        "evoStage": 2,
         "color": "pink",
         "evolution": [
             {
@@ -1027,6 +1065,7 @@
         ],
         "height": 8,
         "weight": 75,
+        "evoStage": 1,
         "habitat": "cave",
         "color": "purple",
         "evolution": [
@@ -1054,6 +1093,7 @@
         ],
         "height": 16,
         "weight": 550,
+        "evoStage": 2,
         "habitat": "cave",
         "color": "purple",
         "evolution": [
@@ -1083,6 +1123,7 @@
         "weight": 54,
         "habitat": "grassland",
         "color": "blue",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "oddish",
@@ -1114,6 +1155,7 @@
         "weight": 86,
         "habitat": "grassland",
         "color": "blue",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "oddish",
@@ -1144,6 +1186,7 @@
         "height": 12,
         "weight": 186,
         "habitat": "grassland",
+        "evoStage": 3,
         "color": "red",
         "evolution": [
             {
@@ -1175,6 +1218,7 @@
         "height": 3,
         "weight": 54,
         "habitat": "forest",
+        "evoStage": 1,
         "color": "red",
         "evolution": [
             {
@@ -1197,6 +1241,7 @@
         ],
         "height": 10,
         "weight": 295,
+        "evoStage": 2,
         "habitat": "forest",
         "color": "red",
         "evolution": [
@@ -1222,6 +1267,7 @@
         "weight": 300,
         "habitat": "forest",
         "color": "purple",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "venonat",
@@ -1242,6 +1288,7 @@
             "poison"
         ],
         "height": 15,
+        "evoStage": 2,
         "weight": 125,
         "habitat": "forest",
         "color": "purple",
@@ -1267,6 +1314,7 @@
         "weight": 8,
         "habitat": "cave",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "diglett",
@@ -1287,6 +1335,7 @@
         ],
         "height": 7,
         "weight": 333,
+        "evoStage": 2,
         "habitat": "cave",
         "color": "brown",
         "evolution": [
@@ -1311,6 +1360,7 @@
         "weight": 42,
         "habitat": "urban",
         "color": "yellow",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "meowth",
@@ -1336,6 +1386,7 @@
         "height": 10,
         "weight": 320,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "yellow",
         "evolution": [
             {
@@ -1362,6 +1413,7 @@
         "height": 8,
         "weight": 196,
         "habitat": "waters-edge",
+        "evoStage": 1,
         "color": "yellow",
         "evolution": [
             {
@@ -1383,6 +1435,7 @@
         ],
         "height": 17,
         "weight": 766,
+        "evoStage": 2,
         "habitat": "waters-edge",
         "color": "blue",
         "evolution": [
@@ -1407,6 +1460,7 @@
         "weight": 280,
         "habitat": "mountain",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "mankey",
@@ -1433,6 +1487,7 @@
         "weight": 320,
         "habitat": "mountain",
         "color": "brown",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "mankey",
@@ -1458,6 +1513,7 @@
         "height": 7,
         "weight": 190,
         "habitat": "grassland",
+        "evoStage": 1,
         "color": "brown",
         "evolution": [
             {
@@ -1480,6 +1536,7 @@
         "height": 19,
         "weight": 1550,
         "habitat": "grassland",
+        "evoStage": 2,
         "color": "brown",
         "evolution": [
             {
@@ -1503,6 +1560,7 @@
         "weight": 124,
         "habitat": "waters-edge",
         "color": "blue",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "poliwag",
@@ -1532,6 +1590,7 @@
         "height": 10,
         "weight": 200,
         "habitat": "waters-edge",
+        "evoStage": 2,
         "color": "blue",
         "evolution": [
             {
@@ -1561,6 +1620,7 @@
             "fighting"
         ],
         "height": 13,
+        "evoStage": 3,
         "weight": 540,
         "habitat": "waters-edge",
         "color": "blue",
@@ -1592,6 +1652,7 @@
         ],
         "height": 9,
         "weight": 195,
+        "evoStage": 1,
         "habitat": "urban",
         "color": "brown",
         "evolution": [
@@ -1619,6 +1680,7 @@
         "height": 13,
         "weight": 565,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "brown",
         "evolution": [
             {
@@ -1645,6 +1707,7 @@
         "height": 15,
         "weight": 480,
         "habitat": "urban",
+        "evoStage": 3,
         "color": "brown",
         "evolution": [
             {
@@ -1670,6 +1733,7 @@
         ],
         "height": 8,
         "weight": 195,
+        "evoStage": 1,
         "habitat": "mountain",
         "color": "gray",
         "evolution": [
@@ -1697,6 +1761,7 @@
         "height": 15,
         "weight": 705,
         "habitat": "mountain",
+        "evoStage": 2,
         "color": "gray",
         "evolution": [
             {
@@ -1724,6 +1789,7 @@
         "weight": 1300,
         "habitat": "mountain",
         "color": "gray",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "machop",
@@ -1751,6 +1817,7 @@
         "weight": 40,
         "habitat": "forest",
         "color": "green",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "bellsprout",
@@ -1777,6 +1844,7 @@
         "height": 10,
         "weight": 64,
         "habitat": "forest",
+        "evoStage": 2,
         "color": "green",
         "evolution": [
             {
@@ -1803,6 +1871,7 @@
         ],
         "height": 17,
         "weight": 155,
+        "evoStage": 3,
         "habitat": "forest",
         "color": "green",
         "evolution": [
@@ -1831,6 +1900,7 @@
         "height": 9,
         "weight": 455,
         "habitat": "sea",
+        "evoStage": 1,
         "color": "blue",
         "evolution": [
             {
@@ -1853,6 +1923,7 @@
         ],
         "height": 16,
         "weight": 550,
+        "evoStage": 2,
         "habitat": "sea",
         "color": "blue",
         "evolution": [
@@ -1877,6 +1948,7 @@
         "height": 4,
         "weight": 200,
         "habitat": "mountain",
+        "evoStage": 1,
         "color": "brown",
         "evolution": [
             {
@@ -1904,6 +1976,7 @@
         "height": 10,
         "weight": 1050,
         "habitat": "mountain",
+        "evoStage": 2,
         "color": "brown",
         "evolution": [
             {
@@ -1932,6 +2005,7 @@
         "weight": 3000,
         "habitat": "mountain",
         "color": "brown",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "geodude",
@@ -1957,6 +2031,7 @@
         "height": 10,
         "weight": 300,
         "habitat": "grassland",
+        "evoStage": 1,
         "color": "yellow",
         "evolution": [
             {
@@ -1978,6 +2053,7 @@
         ],
         "height": 17,
         "weight": 950,
+        "evoStage": 2,
         "habitat": "grassland",
         "color": "yellow",
         "evolution": [
@@ -2002,6 +2078,7 @@
         "height": 12,
         "weight": 360,
         "habitat": "waters-edge",
+        "evoStage": 1,
         "color": "pink",
         "evolution": [
             {
@@ -2029,6 +2106,7 @@
         "height": 16,
         "weight": 785,
         "habitat": "waters-edge",
+        "evoStage": 2,
         "color": "pink",
         "evolution": [
             {
@@ -2050,12 +2128,12 @@
         "name": "magnemite",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png",
         "types": [
-            "electric",
-            "steel"
+            "electric"
         ],
         "height": 3,
         "weight": 60,
         "habitat": "rough-terrain",
+        "evoStage": 1,
         "color": "gray",
         "evolution": [
             {
@@ -2077,13 +2155,13 @@
         "name": "magneton",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/82.png",
         "types": [
-            "electric",
-            "steel"
+            "electric"
         ],
         "height": 10,
         "weight": 600,
         "habitat": "rough-terrain",
         "color": "gray",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "magnemite",
@@ -2109,6 +2187,7 @@
         ],
         "height": 8,
         "weight": 150,
+        "evoStage": 1,
         "habitat": "grassland",
         "color": "brown",
         "evolution": [
@@ -2132,6 +2211,7 @@
         ],
         "height": 14,
         "weight": 392,
+        "evoStage": 1,
         "habitat": "grassland",
         "color": "brown",
         "evolution": [
@@ -2156,6 +2236,7 @@
         "height": 18,
         "weight": 852,
         "habitat": "grassland",
+        "evoStage": 2,
         "color": "brown",
         "evolution": [
             {
@@ -2178,6 +2259,7 @@
         "height": 11,
         "weight": 900,
         "habitat": "sea",
+        "evoStage": 1,
         "color": "white",
         "evolution": [
             {
@@ -2202,6 +2284,7 @@
         "weight": 1200,
         "habitat": "sea",
         "color": "white",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "seel",
@@ -2223,6 +2306,7 @@
         "height": 9,
         "weight": 300,
         "habitat": "urban",
+        "evoStage": 1,
         "color": "purple",
         "evolution": [
             {
@@ -2245,6 +2329,7 @@
         "height": 12,
         "weight": 300,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "purple",
         "evolution": [
             {
@@ -2267,6 +2352,7 @@
         "height": 3,
         "weight": 40,
         "habitat": "sea",
+        "evoStage": 1,
         "color": "purple",
         "evolution": [
             {
@@ -2289,6 +2375,7 @@
         ],
         "height": 15,
         "weight": 1325,
+        "evoStage": 2,
         "habitat": "sea",
         "color": "purple",
         "evolution": [
@@ -2311,6 +2398,7 @@
             "poison"
         ],
         "height": 13,
+        "evoStage": 1,
         "weight": 1,
         "habitat": "cave",
         "color": "purple",
@@ -2339,6 +2427,7 @@
         ],
         "height": 16,
         "weight": 1,
+        "evoStage": 2,
         "habitat": "cave",
         "color": "purple",
         "evolution": [
@@ -2367,6 +2456,7 @@
         "height": 15,
         "weight": 405,
         "habitat": "cave",
+        "evoStage": 3,
         "color": "purple",
         "evolution": [
             {
@@ -2393,6 +2483,7 @@
         ],
         "height": 88,
         "weight": 2100,
+        "evoStage": 1,
         "habitat": "cave",
         "color": "gray",
         "evolution": [
@@ -2416,6 +2507,7 @@
         "height": 10,
         "weight": 324,
         "habitat": "grassland",
+        "evoStage": 1,
         "color": "yellow",
         "evolution": [
             {
@@ -2439,6 +2531,7 @@
         "weight": 756,
         "habitat": "grassland",
         "color": "yellow",
+        "evoStage": 2,
         "evolution": [
             {
                 "name": "drowzee",
@@ -2459,6 +2552,7 @@
         ],
         "height": 4,
         "weight": 65,
+        "evoStage": 1,
         "habitat": "waters-edge",
         "color": "red",
         "evolution": [
@@ -2482,6 +2576,7 @@
         "height": 13,
         "weight": 600,
         "habitat": "waters-edge",
+        "evoStage": 2,
         "color": "red",
         "evolution": [
             {
@@ -2504,6 +2599,7 @@
         "height": 5,
         "weight": 104,
         "habitat": "urban",
+        "evoStage": 1,
         "color": "red",
         "evolution": [
             {
@@ -2526,6 +2622,7 @@
         "height": 12,
         "weight": 666,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "red",
         "evolution": [
             {
@@ -2549,6 +2646,7 @@
         "height": 4,
         "weight": 25,
         "habitat": "forest",
+        "evoStage": 1,
         "color": "pink",
         "evolution": [
             {
@@ -2572,6 +2670,7 @@
         "height": 20,
         "weight": 1200,
         "habitat": "forest",
+        "evoStage": 2,
         "color": "yellow",
         "evolution": [
             {
@@ -2595,6 +2694,7 @@
         "weight": 65,
         "habitat": "mountain",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "cubone",
@@ -2614,6 +2714,7 @@
             "ground"
         ],
         "height": 10,
+        "evoStage": 2,
         "weight": 450,
         "habitat": "mountain",
         "color": "brown",
@@ -2636,6 +2737,7 @@
             "fighting"
         ],
         "height": 15,
+        "evoStage": 1,
         "weight": 498,
         "habitat": "urban",
         "color": "brown",
@@ -2668,6 +2770,7 @@
         "height": 14,
         "weight": 502,
         "habitat": "urban",
+        "evoStage": 1,
         "color": "brown",
         "evolution": [
             {
@@ -2697,6 +2800,7 @@
         ],
         "height": 12,
         "weight": 655,
+        "evoStage": 1,
         "habitat": "grassland",
         "color": "pink",
         "evolution": [
@@ -2719,6 +2823,7 @@
         ],
         "height": 6,
         "weight": 10,
+        "evoStage": 1,
         "habitat": "urban",
         "color": "purple",
         "evolution": [
@@ -2742,6 +2847,7 @@
         "height": 12,
         "weight": 95,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "purple",
         "evolution": [
             {
@@ -2763,6 +2869,7 @@
             "rock"
         ],
         "height": 10,
+        "evoStage": 1,
         "weight": 1150,
         "habitat": "rough-terrain",
         "color": "gray",
@@ -2791,6 +2898,7 @@
         ],
         "height": 19,
         "weight": 1200,
+        "evoStage": 2,
         "habitat": "rough-terrain",
         "color": "gray",
         "evolution": [
@@ -2816,6 +2924,7 @@
             "normal"
         ],
         "height": 11,
+        "evoStage": 1,
         "weight": 346,
         "habitat": "urban",
         "color": "pink",
@@ -2844,6 +2953,7 @@
         "height": 10,
         "weight": 350,
         "habitat": "grassland",
+        "evoStage": 1,
         "color": "blue",
         "evolution": [
             {
@@ -2865,6 +2975,7 @@
         ],
         "height": 22,
         "weight": 800,
+        "evoStage": 1,
         "habitat": "grassland",
         "color": "brown",
         "evolution": [
@@ -2884,6 +2995,7 @@
         "height": 4,
         "weight": 80,
         "habitat": "sea",
+        "evoStage": 1,
         "color": "blue",
         "evolution": [
             {
@@ -2909,6 +3021,7 @@
         ],
         "height": 12,
         "weight": 250,
+        "evoStage": 2,
         "habitat": "sea",
         "color": "blue",
         "evolution": [
@@ -2936,6 +3049,7 @@
         "height": 6,
         "weight": 150,
         "habitat": "waters-edge",
+        "evoStage": 1,
         "color": "red",
         "evolution": [
             {
@@ -2958,6 +3072,7 @@
         "height": 13,
         "weight": 390,
         "habitat": "waters-edge",
+        "evoStage": 2,
         "color": "red",
         "evolution": [
             {
@@ -2978,6 +3093,7 @@
             "water"
         ],
         "height": 8,
+        "evoStage": 1,
         "weight": 345,
         "habitat": "sea",
         "color": "brown",
@@ -3003,6 +3119,7 @@
         "height": 11,
         "weight": 800,
         "habitat": "sea",
+        "evoStage": 2,
         "color": "purple",
         "evolution": [
             {
@@ -3020,12 +3137,12 @@
         "name": "mr-mime",
         "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/122.png",
         "types": [
-            "psychic",
-            "fairy"
+            "psychic"
         ],
         "height": 13,
         "weight": 545,
         "habitat": "urban",
+        "evoStage": 1,
         "color": "pink",
         "evolution": [
             {
@@ -3052,6 +3169,7 @@
         ],
         "height": 15,
         "weight": 560,
+        "evoStage": 1,
         "habitat": "grassland",
         "color": "green",
         "evolution": [
@@ -3080,6 +3198,7 @@
         "height": 14,
         "weight": 406,
         "habitat": "urban",
+        "evoStage": 1,
         "color": "red",
         "evolution": [
             {
@@ -3101,6 +3220,7 @@
         ],
         "height": 11,
         "weight": 300,
+        "evoStage": 1,
         "habitat": "grassland",
         "color": "yellow",
         "evolution": [
@@ -3128,6 +3248,7 @@
         "height": 13,
         "weight": 445,
         "habitat": "mountain",
+        "evoStage": 1,
         "color": "red",
         "evolution": [
             {
@@ -3155,6 +3276,7 @@
         "weight": 550,
         "habitat": "forest",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "pinsir",
@@ -3172,6 +3294,7 @@
         "height": 14,
         "weight": 884,
         "habitat": "grassland",
+        "evoStage": 1,
         "color": "brown",
         "evolution": [
             {
@@ -3190,6 +3313,7 @@
         "height": 9,
         "weight": 100,
         "habitat": "waters-edge",
+        "evoStage": 1,
         "color": "red",
         "evolution": [
             {
@@ -3213,6 +3337,7 @@
         "height": 65,
         "weight": 2350,
         "habitat": "waters-edge",
+        "evoStage": 2,
         "color": "blue",
         "evolution": [
             {
@@ -3255,6 +3380,7 @@
         "weight": 40,
         "habitat": "urban",
         "color": "purple",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "ditto",
@@ -3271,6 +3397,7 @@
         ],
         "height": 3,
         "weight": 65,
+        "evoStage": 1,
         "habitat": "urban",
         "color": "brown",
         "evolution": [
@@ -3322,6 +3449,7 @@
         "height": 10,
         "weight": 290,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "blue",
         "evolution": [
             {
@@ -3372,6 +3500,7 @@
         "height": 8,
         "weight": 245,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "yellow",
         "evolution": [
             {
@@ -3422,6 +3551,7 @@
         "height": 9,
         "weight": 250,
         "habitat": "urban",
+        "evoStage": 2,
         "color": "red",
         "evolution": [
             {
@@ -3472,6 +3602,7 @@
         "height": 8,
         "weight": 365,
         "habitat": "urban",
+        "evoStage": 1,
         "color": "pink",
         "evolution": [
             {
@@ -3498,6 +3629,7 @@
         ],
         "height": 4,
         "weight": 75,
+        "evoStage": 1,
         "habitat": "sea",
         "color": "blue",
         "evolution": [
@@ -3521,6 +3653,7 @@
         ],
         "height": 10,
         "weight": 350,
+        "evoStage": 2,
         "habitat": "sea",
         "color": "blue",
         "evolution": [
@@ -3546,6 +3679,7 @@
         "weight": 115,
         "habitat": "sea",
         "color": "brown",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "kabuto",
@@ -3568,6 +3702,7 @@
         "height": 13,
         "weight": 405,
         "habitat": "sea",
+        "evoStage": 2,
         "color": "brown",
         "evolution": [
             {
@@ -3591,6 +3726,7 @@
         "height": 18,
         "weight": 590,
         "habitat": "mountain",
+        "evoStage": 1,
         "color": "purple",
         "evolution": [
             {
@@ -3609,6 +3745,7 @@
         "height": 21,
         "weight": 4600,
         "habitat": "mountain",
+        "evoStage": 1,
         "color": "black",
         "evolution": [
             {
@@ -3633,6 +3770,7 @@
         "weight": 554,
         "habitat": "rare",
         "color": "blue",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "articuno",
@@ -3651,6 +3789,7 @@
         "height": 16,
         "weight": 526,
         "habitat": "rare",
+        "evoStage": 1,
         "color": "yellow",
         "evolution": [
             {
@@ -3671,6 +3810,7 @@
         "weight": 600,
         "habitat": "rare",
         "color": "yellow",
+        "evoStage": 1,
         "evolution": [
             {
                 "name": "moltres",
@@ -3687,6 +3827,7 @@
         ],
         "height": 18,
         "weight": 33,
+        "evoStage": 1,
         "habitat": "waters-edge",
         "color": "blue",
         "evolution": [
@@ -3714,6 +3855,7 @@
         "height": 40,
         "weight": 165,
         "habitat": "waters-edge",
+        "evoStage": 2,
         "color": "blue",
         "evolution": [
             {
@@ -3742,6 +3884,7 @@
         "weight": 2100,
         "habitat": "waters-edge",
         "color": "brown",
+        "evoStage": 3,
         "evolution": [
             {
                 "name": "dratini",
@@ -3765,6 +3908,7 @@
             "psychic"
         ],
         "height": 20,
+        "evoStage": 1,
         "weight": 1220,
         "habitat": "rare",
         "color": "purple",
@@ -3784,6 +3928,7 @@
         ],
         "height": 4,
         "weight": 40,
+        "evoStage": 1,
         "habitat": "rare",
         "color": "pink",
         "evolution": [

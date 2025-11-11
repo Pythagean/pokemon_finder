@@ -59,13 +59,16 @@ async function fetchJson(url) {
         id: pokemon.id,
         name: pokemon.name,
         sprite: pokemon.sprites?.other?.['official-artwork']?.front_default || null,
-        types: pokemon.types.map(t => t.type.name),
+        types: pokemon.types
+          .map(t => t.type.name)
+          .filter(type => type !== 'steel' && type !== 'fairy'),
         height: pokemon.height,
         weight: pokemon.weight,
         habitat: species.habitat?.name || null,
         color: species.color?.name || null,
         evolution
       };
+
       results.push(compact);
     }
     fs.writeFileSync(OUT_FILE, JSON.stringify(results), 'utf8');

@@ -448,7 +448,7 @@ function App() {
   });
 
   pokemonList.forEach((pokemon) => {
-    const pokemonTypeNames = (pokemon.types || []).map(t => t.type.name.toLowerCase());
+    const pokemonTypeNames = (pokemon.types || []).map(t => t.toLowerCase());
     const pokemonCustomColors = getPokemonColors(pokemon.name);
     const pokemonCustomColorsLower = pokemonCustomColors.map(c => c.toLowerCase());
 
